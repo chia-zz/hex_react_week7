@@ -1,0 +1,38 @@
+@import 'bootstrap/scss/functions';
+
+@import '../style/base/variables';
+@import '../style/base/variables-dark';
+
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
+
+@import '../style/base/utilities';
+@import 'bootstrap/scss/utilities/api';
+@import 'bootstrap/scss/bootstrap.scss';
+
+@import '../style/components/loadingSpinner';
+@import '../style/layout/header';
+@import '../style/layout/footer';
+@import '../style/front/home';
+@import '../style/front/frontPage';
+
+@import '../style/admin/admLogin';
+
+html,
+body {
+  font-family: 'Fira Sans', 'Shippori Mincho', 'Noto Serif TC', serif;
+  font-weight: 500;
+  text-align: center;
+  min-height: 100vh;
+  background: url('/bg.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat;
+}
+img {
+  object-fit: contain;
+  max-width: 100%;
+}

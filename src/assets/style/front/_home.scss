@@ -1,0 +1,32 @@
+.home-banner {
+  position: relative;
+  img {
+    height: calc(100vh - 108px);
+    object-fit: cover;
+  }
+}
+.text-shadow {
+  text-shadow: 2px 4px 6px #6e6e6e;
+}
+
+// swiper 樣式
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: $success-light;
+  border: 1px solid #6c757d;
+  opacity: 0.6;
+  margin: 0 6px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+  background-color: $success-light;
+  border: 1px solid $primary-200;
+  opacity: 1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  width: 24px;
+  border-radius: 8px;
+}
