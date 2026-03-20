@@ -12,8 +12,9 @@ import Checkout from '../pages/front/Checkout.jsx';
 import NotFound404 from '../pages/front/NotFound404.jsx';
 // 後台
 import AdmLogin from '../pages/admin/AdmLogin.jsx';
-// import AdmDashboard from "../pages/admin/AdmDashboard.jsx";
+import AdmOrder from '../pages/admin/AdmOrder.jsx';
 import AdmProducts from '../pages/admin/AdmProducts.jsx';
+// import AdmImages from '../pages/admin/AdmImages.jsx';
 import AdmNotFound404 from '../pages/admin/AdmNotFound404.jsx';
 
 export const router = createHashRouter([
@@ -43,8 +44,10 @@ export const router = createHashRouter([
         path: '/admin',
         element: <AdminLayout />,
         children: [
-          { index: true, element: <AdmProducts /> },
+          { index: true, element: <AdmOrder /> },
+          { path: 'orders', element: <AdmOrder /> },
           { path: 'products', element: <AdmProducts /> },
+          // { path: 'images', element: <AdmImages /> },
           { path: '*', element: <AdmNotFound404 /> },
         ],
       },

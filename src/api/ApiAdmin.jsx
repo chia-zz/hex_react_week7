@@ -35,7 +35,7 @@ export const adminLogout = () => {
   return axios.post(`${apiUrl}/logout`, {}, getHeaders());
 };
 
-// 取得商品資料
+// 取得全部商品資料
 export const getAdminProducts = (page = 1) => {
   return axios.get(
     `${apiUrl}/api/${apiPath}/admin/products?page=${page}`,
@@ -43,7 +43,7 @@ export const getAdminProducts = (page = 1) => {
   );
 };
 
-// 新增商品
+// 新增單一商品
 export const addProduct = (data) => {
   return axios.post(
     `${apiUrl}/api/${apiPath}/admin/product`,
@@ -52,7 +52,7 @@ export const addProduct = (data) => {
   );
 };
 
-// 編輯商品
+// 編輯單一商品
 export const updateProduct = (id, data) => {
   return axios.put(
     `${apiUrl}/api/${apiPath}/admin/product/${id}`,
@@ -61,7 +61,7 @@ export const updateProduct = (id, data) => {
   );
 };
 
-// 刪除商品
+// 刪除單一商品
 export const deleteProduct = (id) => {
   return axios.delete(
     `${apiUrl}/api/${apiPath}/admin/product/${id}`,
@@ -76,4 +76,28 @@ export const uploadImage = (formData) => {
     formData,
     getHeaders(),
   );
+};
+
+// 取得全部訂單資料
+export const getAdminOrders = (page = 1) => {
+  return axios.get(`${apiUrl}/api/${apiPath}/admin/orders`, {
+    params: { page },
+  });
+};
+
+// 編輯單一訂單
+export const updateAdminOrder = (id, content) => {
+  return axios.put(`${apiUrl}/api/${apiPath}/admin/order/${id}`, {
+    data: content,
+  });
+};
+
+// 刪除單一訂單
+export const deleteAdminOrder = (id) => {
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/order/${id}`);
+};
+
+// 刪除全部訂單
+export const deleteAdminAllOrders = () => {
+  return axios.delete(`${apiUrl}/api/${apiPath}/admin/orders/all`);
 };

@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // API
 import {
   getAdminProducts,
-  checkUserLogin,
   deleteProduct,
-  adminLogout,
   uploadImage,
   addProduct,
   updateProduct,
 } from '../../api/ApiAdmin';
+
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Pagination from '../../components/Pagination';
@@ -40,6 +38,7 @@ function AdmProducts() {
   const [products, setProducts] = useState([]);
   // loading spinner 設定
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   // pagination
   const [pagination, setPagination] = useState({});
   const [tempProduct, setTempProduct] = useState(addNewProduct); // 之前是 null 但現在要存資料的格式
@@ -67,7 +66,7 @@ function AdmProducts() {
   // API
   // 取得商品資料
   const getData = async (page = 1) => {
-    // setIsLoading(true);
+    setLoadingData(true);
     try {
       const res = await getAdminProducts(page);
       setProducts(Object.values(res.data.products));
@@ -75,40 +74,16 @@ function AdmProducts() {
     } catch (error) {
       toast.error('取得資料失敗', error);
       navigate('/');
+    } finally {
+      setLoadingData(null);
     }
   };
-  // 檢查登入狀態
-  const checkLogin = async () => {
-    // setIsLoading(true);
-    try {
-      const res = await checkUserLogin();
-      // toast.success("登入成功", res.data);
-      return true;
-    } catch (error) {
-      toast.error('檢查失敗，請確認是否登入', error);
-      navigate('/');
-      return false;
-    }
-  };
-  useEffect(() => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
-      '$1',
-    );
-    if (!token) {
-      toast.error('您尚未登入');
-      navigate('/');
-      return;
-    }
 
-    axios.defaults.headers.common['Authorization'] = token;
+  useEffect(() => {
     const init = async () => {
       setIsLoading(true);
       try {
-        const isValid = await checkLogin();
-        if (isValid) {
-          await getData();
-        }
+        await getData();
       } finally {
         setIsLoading(false);
       }
@@ -116,19 +91,6 @@ function AdmProducts() {
 
     init();
   }, []);
-
-  const handleLogout = () => {
-    try {
-      const res = adminLogout();
-      document.cookie = 'hexToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-      axios.defaults.headers.common['Authorization'] = '';
-      toast.success('成功登出', res.data);
-      navigate('/');
-    } catch (error) {
-      toast.error('發生錯誤', error);
-      navigate('/');
-    }
-  };
 
   const handleDelete = async (id) => {
     try {
@@ -228,20 +190,36 @@ function AdmProducts() {
     <div className='container my-5'>
       <h1 className='text-sec-500 mb-5'>產品列表</h1>
       <div className='mb-3 d-flex gap-2'>
-        <button className='btn btn-tert-500' onClick={getData}>
-          <i className='bi bi-arrow-clockwise me-1'></i>重整資料
+        <button
+          className='btn btn-tert-500'
+          onClick={getData}
+          disabled={loadingData}
+        >
+          {loadingData ? (
+            <>
+              <div className='d-flex justify-content-center align-items-center'>
+                <LoadingSpinner
+                  spinner='RotatingLines'
+                  color='#272725'
+                  width='16px'
+                  height='16px'
+                />
+                <span className='ms-2'>處理中</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <i className='bi bi-arrow-clockwise'></i>
+              <span className='ms-2'>重新整理</span>
+            </>
+          )}
         </button>
-        <button className='btn btn-tert-700' onClick={checkLogin}>
-          <i className='bi bi-person-check me-1'></i>驗證登入狀態
-        </button>
+
         <button
           className='btn btn-primary'
           onClick={() => openProductModal('create')}
         >
           <i className='bi bi-plus-lg me-1'></i>建立新的商品
-        </button>
-        <button className='btn btn-danger ms-auto' onClick={handleLogout}>
-          <i className='bi bi-box-arrow-right me-1'></i>登出
         </button>
       </div>
       {isLoading ? (

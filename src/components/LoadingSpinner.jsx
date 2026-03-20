@@ -1,13 +1,30 @@
-import { Bars } from 'react-loader-spinner';
-function LoadingSpinner() {
+import { Bars, Oval, RotatingLines, ThreeDots } from 'react-loader-spinner';
+
+const spinnerType = {
+  Bars,
+  Oval,
+  RotatingLines,
+  ThreeDots,
+};
+
+function LoadingSpinner({
+  spinner = 'Bars',
+  height = '25',
+  width = '40',
+  color = '#4d7c58',
+  visible = true,
+}) {
+  // 預設用 Bars
+  const Spinner = spinnerType[spinner] || Bars;
   return (
     <>
-      <Bars
-        height='25'
-        width='40'
-        color='#4d7c58'
-        ariaLabel='bars-loading'
-        visible={true}
+      <Spinner
+        height={height}
+        width={width}
+        color={color}
+        strokeColor={color}
+        visible={visible}
+        ariaLabel='loading'
       />
     </>
   );
