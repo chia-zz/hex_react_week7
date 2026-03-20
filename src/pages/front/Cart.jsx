@@ -19,6 +19,7 @@ function Cart() {
   const [total, setTotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  // const [cartLoading, setCartLoading] = useState(false);
 
   // 取得購物車內容
   const getAllCart = async () => {
@@ -180,7 +181,7 @@ function Cart() {
                           </button>
                         </div>
                       </td>
-                      <td>NT$ {item.total}</td>
+                      <td>NT$ {item.total.toLocaleString()}</td>
                       <td>
                         <button
                           type='button'
@@ -203,7 +204,10 @@ function Cart() {
                 <h5 className='d-flex px-3'>
                   商品小計
                   <span className='ms-auto'>
-                    NT$<span className='fw-bold ms-1'>{total}</span>
+                    NT$
+                    <span className='fw-bold ms-1'>
+                      {total.toLocaleString()}
+                    </span>
                   </span>
                 </h5>
                 <h5 className='d-flex px-3'>
@@ -213,12 +217,9 @@ function Cart() {
                       <span className='me-1'>NT$</span>0
                     </span>
                     /
-                    <small className='ms-1'>
-                      <del className='text-muted'>
-                        <span className='me-1'>NT$</span>
-                        60
-                      </del>
-                    </small>
+                    <span className='fs-sm ms-1'>
+                      <del className='text-sec-700'>NT$&nbsp;60</del>
+                    </span>
                   </span>
                 </h5>
               </div>
@@ -226,7 +227,10 @@ function Cart() {
               <h3 className='d-flex px-3'>
                 商品總計
                 <span className='ms-auto'>
-                  NT$<span className='fw-bold ms-1'>{finalTotal}</span>
+                  NT$
+                  <span className='fw-bold ms-1'>
+                    {finalTotal.toLocaleString()}
+                  </span>
                 </span>
               </h3>
 

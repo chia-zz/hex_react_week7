@@ -244,8 +244,8 @@ function AdmProducts() {
                 {products.map((item) => (
                   <tr key={item.id}>
                     <td>{item.title}</td>
-                    <td>{item.origin_price}</td>
-                    <td>{item.price}</td>
+                    <td>{item.origin_price.toLocaleString()}</td>
+                    <td>{item.price.toLocaleString()}</td>
                     <td>
                       {item.is_enabled ? (
                         <span className='text-success'>啟用</span>

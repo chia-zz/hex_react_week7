@@ -144,8 +144,8 @@ function ProductDetail() {
                       >
                         {loadingCartId === product.id ? (
                           <>
-                            <div className='d-flex justify-content-center'>
-                              <LoadingSpinner />
+                            <div className='d-flex justify-content-center w-100'>
+                              <LoadingSpinner spinner='RotatingLines' />
                             </div>
                           </>
                         ) : (

@@ -19,9 +19,10 @@ import ProductModal from '../../components/ProductModal';
 
 function AdmOrder() {
   // const navigate = useNavigate();
-  // loading spinner 設定
+  // 元件設定
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [pagination, setPagination] = useState({});
 
   const [Order, setOrder] = useState([]);
   // API
@@ -32,7 +33,7 @@ function AdmOrder() {
       const res = await getAdminOrders(page);
       console.log(res.data.orders);
       setOrder(res.data.orders);
-      // setPagination(res.data.pagination);
+      setPagination(res.data.pagination);
     } catch (error) {
       toast.error('取得資料失敗', error);
       // navigate('/');
@@ -69,7 +70,7 @@ function AdmOrder() {
   return (
     <>
       <div className='container my-5'>
-        <h1 className='text-sec-500 mb-5'>產品列表</h1>
+        <h1 className='text-sec-500 mb-5'>訂單列表</h1>
         <div className='mb-3 d-flex gap-2'>
           <button
             className='btn btn-tert-500'
@@ -133,6 +134,7 @@ function AdmOrder() {
                   ))}
                 </tbody>
               </table>
+              <Pagination pagination={pagination} onChangePage={getOrder} />
             </div>
           </div>
         )}

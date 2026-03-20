@@ -25,6 +25,7 @@
 // 後台
 @import '../style/admin/admLogin';
 @import '../style/admin/admSidebar';
+@import '../style/admin/admBase';
 
 html,
 body {
@@ -40,8 +41,4 @@ body {
 img {
   object-fit: contain;
   max-width: 100%;
-}
-.admin_base {
-  font-family: 'Chiron GoRound TC', serif;
-  font-weight: 400;
 }

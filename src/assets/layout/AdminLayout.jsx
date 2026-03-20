@@ -62,25 +62,27 @@ function AdminLayout() {
   };
   return (
     <>
-      <header className='admin_base d-flex justify-content-between py-3 px-4 text-primary-100 bg-primary-900'>
-        <h1 className='mb-0'>後台管理系統</h1>
-        <div className='d-flex gap-2'>
-          {/* <button className='btn btn-tert-700' onClick={checkLogin}>
+      <div className='admin_base position-relative'>
+        <header className='d-flex justify-content-between py-3 px-4 text-primary-100 bg-primary-900'>
+          <h1 className='mb-0'>後台管理系統</h1>
+          <div className='d-flex gap-2'>
+            {/* <button className='btn btn-tert-700' onClick={checkLogin}>
             <i className='bi bi-person-check me-1'></i>驗證登入狀態
           </button> */}
-          <button className='btn btn-danger ms-auto' onClick={handleLogout}>
-            <i className='bi bi-box-arrow-right me-1'></i>登出
-          </button>
-        </div>
-      </header>
-      <div className='admin_base d-flex'>
-        <div className='adm__siderbar'>
-          <AdmSidebar />
-        </div>
+            <button className='btn btn-danger ms-auto' onClick={handleLogout}>
+              <i className='bi bi-box-arrow-right me-1'></i>登出
+            </button>
+          </div>
+        </header>
+        <div className='admin_base d-flex position-relative'>
+          <div className='adm__sidebar'>
+            <AdmSidebar />
+          </div>
 
-        <main className='w-100'>
-          <Outlet />
-        </main>
+          <main>
+            <Outlet />
+          </main>
+        </div>
       </div>
     </>
   );

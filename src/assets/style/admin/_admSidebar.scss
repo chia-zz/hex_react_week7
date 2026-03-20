@@ -1,8 +1,21 @@
-.adm__siderbar {
+.adm__sidebar {
+  position: fixed;
   width: 20vw;
   max-width: 250px;
-  height: 100vh;
+  height: 100%;
+  top: 80px;
   color: $primary-800;
   background-color: $sec-100;
   border-right: 1px solid $sec-400;
+}
+
+.sidebar_link {
+  font-size: 28px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.sidebar_link-active {
+  color: $sec-100;
+  background-color: $primary-800;
 }

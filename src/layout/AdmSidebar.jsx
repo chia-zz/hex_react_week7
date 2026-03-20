@@ -12,15 +12,13 @@ function AdmSidebar() {
       <nav className='my-4'>
         <ul className='list-unstyled'>
           {AdmLinks.map((item) => (
-            <li key={item.url}>
+            <li key={item.url} className='mb-2'>
               <NavLink
                 key={`/admin/${item.url}`}
                 to={`/admin/${item.url}`}
-                // className={({ isActive }) =>
-                //   `mobile-container__link ${
-                //     isActive ? 'mobile-container__link--active ' : ''
-                //   }`
-                // }
+                className={({ isActive }) =>
+                  `sidebar_link ${isActive ? 'sidebar_link-active ' : ''}`
+                }
               >
                 {item.title}
               </NavLink>
