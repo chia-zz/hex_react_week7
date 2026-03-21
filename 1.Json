@@ -1,0 +1,197 @@
+{
+  "success": true,
+  "products": {
+    "new_001": {
+      "id": "new_001",
+      "title": "愛心榕",
+      "category": "晨光之森",
+      "price": 1200,
+      "origin_price": 1600,
+      "description": "擁有巨大的心形葉片，質地輕薄如綢緞，是空間中最溫柔的焦點",
+      "content": "愛心榕以其浪漫的闊葉著稱。它喜歡明亮的散射光，看著陽光穿透它翠綠的葉片，能為居家帶來一種輕盈而充滿活力的森林感。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1614594975525-e45190c55d0b%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "明亮散射光，忌強光直曬" },
+        { "label": "水分建議", "value": "土乾再澆，保持微濕潤" },
+        { "label": "環境濕度", "value": "50% - 70% (喜歡通風)" },
+        { "label": "照顧難度", "value": "★★★☆☆ (注意葉片清潔)" }
+      ]
+    },
+    "new_002": {
+      "id": "new_002",
+      "title": "尤加利樹",
+      "category": "晨光之森",
+      "price": 950,
+      "origin_price": 1350,
+      "description": "圓潤的銀藍色葉片帶著獨特的清香，散發著慵懶的北歐氣息",
+      "content": "尤加利不只是乾燥花的寵兒，活體盆栽更具生命力。它需要極佳的通風與充足陽光，那抹銀灰色的視覺色彩，能瞬間冷靜室內的色調。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1615196373289-980b62e49339%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "全日照或明亮陽台" },
+        { "label": "水分建議", "value": "喜水但忌積水，需高度通風" },
+        { "label": "環境濕度", "value": "40% - 55% (忌悶熱)" },
+        { "label": "照顧難度", "value": "★★★★☆ (通風是關鍵)" }
+      ]
+    },
+    "new_003": {
+      "id": "new_003",
+      "title": "散尾葵",
+      "category": "晨光之森",
+      "price": 1800,
+      "origin_price": 2400,
+      "description": "羽毛狀的葉片優雅垂墜，能有效淨化空氣，營造熱帶度假氛圍",
+      "content": "它是室內的天然加濕器。大氣的線條能填補空間的空白，讓你在家也能感受到海島般的放鬆與悠閒。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1596547609805-4f3693f9c629%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "半日照或明亮散射光" },
+        { "label": "水分建議", "value": "保持土壤濕潤，忌乾旱" },
+        { "label": "環境濕度", "value": "65% - 85% (喜高濕環境)" },
+        { "label": "照顧難度", "value": "★★☆☆☆ (注意葉尖保濕)" }
+      ]
+    },
+    "new_004": {
+      "id": "new_004",
+      "title": "吊蘭",
+      "category": "微光靜謐",
+      "price": 350,
+      "origin_price": 500,
+      "description": "細長的葉片向外擴散，會長出可愛的小走莖，像綠色的煙火綻放",
+      "content": "吊蘭是適應力最強的室內植物之一。無論是掛吊還是放在書架頂端，它那隨風搖曳的姿態都能為生活帶來一絲靈動。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1612363148167-2694b169b752%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "耐半陰，明亮散射光更佳" },
+        { "label": "水分建議", "value": "土乾再澆，極其耐乾旱" },
+        { "label": "環境濕度", "value": "40% - 60% (一般即可)" },
+        { "label": "照顧難度", "value": "★☆☆☆☆ (適合初學者)" }
+      ]
+    },
+    "new_005": {
+      "id": "new_005",
+      "title": "黃金葛 (雲母)",
+      "category": "微光靜謐",
+      "price": 420,
+      "origin_price": 580,
+      "description": "心形葉片上帶有隨機的白色大理石紋理，是植物界的百搭基礎款",
+      "content": "雖然平凡但絕不簡單。雲母黃金葛的葉片花紋比普通品種更精緻，無論在低光源還是明亮處都能安穩生長，是陪伴感最強的植物。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1628155930542-3c7a64e2c833%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "耐陰，散射光可維持斑紋" },
+        { "label": "水分建議", "value": "土乾再澆，可水耕栽培" },
+        { "label": "環境濕度", "value": "50% - 80% (適應性強)" },
+        { "label": "照顧難度", "value": "★☆☆☆☆ (生命力頑強)" }
+      ]
+    },
+    "new_006": {
+      "id": "new_006",
+      "title": "竹芋 (青蘋果)",
+      "category": "微光靜謐",
+      "price": 780,
+      "origin_price": 950,
+      "description": "圓形大葉片上有規律的淺綠色條紋，清新色彩如咬下一口青蘋果",
+      "content": "竹芋是「會動」的植物，夜晚葉片會緩緩合攏。青蘋果品種以其清新的視覺色彩，非常適合擺放在臥室或靜謐的閱讀角落。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1614594975525-e45190c55d0b%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "半陰環境，忌陽光直曬" },
+        { "label": "水分建議", "value": "喜濕潤，夏季需頻繁噴水" },
+        { "label": "環境濕度", "value": "70% - 85% (怕乾燥)" },
+        { "label": "照顧難度", "value": "★★★☆☆ (需注意葉片焦邊)" }
+      ]
+    },
+    "new_007": {
+      "id": "new_007",
+      "title": "發財樹",
+      "category": "微光靜謐",
+      "price": 600,
+      "origin_price": 850,
+      "description": "編織狀的樹幹搭配撐開如掌的綠葉，是寓意與美感並重的選擇",
+      "content": "不要因為它的名字而覺得它俗氣。發財樹的樹冠層次分明，非常適合搭配簡約的陶盆，能為玄關或客廳增添沈穩的木質感。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1599591459413-327593581f38%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "明亮散射光至半陰" },
+        { "label": "水分建議", "value": "樹幹可儲水，切忌過度澆水" },
+        { "label": "環境濕度", "value": "40% - 60% (保持環境通風)" },
+        { "label": "照顧難度", "value": "★☆☆☆☆ (極耐旱)" }
+      ]
+    },
+    "new_008": {
+      "id": "new_008",
+      "title": "鏡面草",
+      "category": "微光靜謐",
+      "price": 550,
+      "origin_price": 720,
+      "description": "圓形葉片長在細長的葉柄末端，如同一面面小鏡子，可愛又大方",
+      "content": "鏡面草是北歐居家雜誌的常客。它具有獨特的幾何美感，適合放在小桌板或層架上，是小空間點綴的首選植物。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1622383529357-37d473fab15d%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "明亮散射光，葉片會趨光" },
+        { "label": "水分建議", "value": "土表面乾了再澆透" },
+        { "label": "環境濕度", "value": "50% - 70% (一般室內)" },
+        { "label": "照顧難度", "value": "★★☆☆☆ (注意轉盆受光)" }
+      ]
+    },
+    "new_009": {
+      "id": "new_009",
+      "title": "秋海棠 (鱒魚)",
+      "category": "深夜氣息",
+      "price": 680,
+      "origin_price": 880,
+      "description": "深綠色長葉上有銀白色的點點，葉背則是深邃的紫紅色，極具時尚感",
+      "content": "這是一款「波卡圓點」植物。它帶有一種大膽的設計感，非常適合擺放在光影交織的角落，展現其神祕且優雅的雙面魅力。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1614594805320-e6a5549d7f05%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "半陰，避免正午強光" },
+        { "label": "水分建議", "value": "喜微濕，避免葉片積水" },
+        { "label": "環境濕度", "value": "60% - 80% (喜高濕環境)" },
+        { "label": "照顧難度", "value": "★★★☆☆ (注意病蟲害)" }
+      ]
+    },
+    "new_010": {
+      "id": "new_010",
+      "title": "合果芋 (深紅)",
+      "category": "深夜氣息",
+      "price": 450,
+      "origin_price": 600,
+      "description": "箭頭形葉片呈現沈穩的鏽紅色或深紫紅，質感厚實且色彩濃郁",
+      "content": "合果芋不只有綠色。這款深紅品種能在深夜的氛圍中透出一絲暖色，它是極佳的環境色彩調和者，且生命力極其頑強。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1614594975525-e45190c55d0b%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "明亮散射光可維持顏色" },
+        { "label": "水分建議", "value": "土乾再澆，可耐短暫乾旱" },
+        { "label": "環境濕度", "value": "50% - 80% (適應力強)" },
+        { "label": "照顧難度", "value": "★☆☆☆☆ (懶人植物)" }
+      ]
+    },
+    "new_011": {
+      "id": "new_011",
+      "title": "網紋草 (紅脈)",
+      "category": "深夜氣息",
+      "price": 280,
+      "origin_price": 400,
+      "description": "細密的紅色葉脈在墨綠色葉片上交織，宛如微型神經網路，精緻非凡",
+      "content": "它是桌上的微景觀。雖然身形嬌小，但鮮紅的葉脈卻非常有張力，最適合裝入玻璃罐或搭配深色迷你盆具，展現精緻的深夜美學。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1544860707-c352cc5a92e3%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "耐陰，忌陽光直曬" },
+        { "label": "水分建議", "value": "怕乾，需保持介質濕潤" },
+        { "label": "環境濕度", "value": "70% - 90% (喜密閉高濕)" },
+        { "label": "照顧難度", "value": "★★★☆☆ (缺水會倒伏)" }
+      ]
+    },
+    "new_012": {
+      "id": "new_012",
+      "title": "蔓綠絨 (小天使)",
+      "category": "深夜氣息",
+      "price": 820,
+      "origin_price": 1100,
+      "description": "深綠色的裂葉向外開展，姿態粗獷卻優雅，帶有古老雨林的氣息",
+      "content": "小天使蔓綠絨不像常見的蔓性品種，它更像是一座挺拔的小雕塑。深綠色的厚實葉片不僅美觀，還具有極佳的耐陰性與空氣淨化能力。",
+      "imageUrl": "https://www.google.com/search?q=https://images.unsplash.com/photo-1611080541599-8c6dbde6ed28%3Fw%3D1600%26auto%3Dformat%26fit%3Dcrop%26q%3D60",
+      "details": [
+        { "label": "光照需求", "value": "明亮散射光至室內半陰" },
+        { "label": "水分建議", "value": "土表乾兩節指頭再澆水" },
+        { "label": "環境濕度", "value": "60% - 80% (喜空氣濕潤)" },
+        { "label": "照顧難度", "value": "★★☆☆☆ (注意不要積水)" }
+      ]
+    }
+  }
+}

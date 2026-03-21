@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import useMessage from '../../hooks/useMessage';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 // API
@@ -14,18 +14,18 @@ function Checkout() {
   const [total, setTotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { showError, showSuccess } = useMessage();
 
   // 取得購物車內容
   const getAllCart = async () => {
     setIsLoading(true);
     try {
       const res = await getCart();
-      console.log('購物車 API 回傳:', res.data);
       setCartItem(res.data.data.carts);
       setTotal(res.data.data.total);
       setFinalTotal(res.data.data.final_total);
     } catch (error) {
-      console.log('購物車內容載入失敗', error);
+      showError('購物車內容載入失敗', error);
     } finally {
       setIsLoading(false);
     }
@@ -59,14 +59,12 @@ function Checkout() {
         user: formData,
         message: formData.message,
       };
-      const res = await submitOrder(data);
-      console.log(res);
-      toast.success('訂單送出成功！');
+      await submitOrder(data);
+      showSuccess('訂單送出成功！');
       reset();
       getAllCart();
     } catch (error) {
-      console.log(error);
-      toast.error('送出訂單發生錯誤：', error);
+      showError('送出訂單發生錯誤：', error);
     }
   };
 

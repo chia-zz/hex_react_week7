@@ -47,7 +47,7 @@ export const getAdminProducts = (page = 1) => {
 export const addProduct = (data) => {
   return axios.post(
     `${apiUrl}/api/${apiPath}/admin/product`,
-    data,
+    { data },
     getHeaders(),
   );
 };
@@ -56,7 +56,7 @@ export const addProduct = (data) => {
 export const updateProduct = (id, data) => {
   return axios.put(
     `${apiUrl}/api/${apiPath}/admin/product/${id}`,
-    data,
+    { data },
     getHeaders(),
   );
 };
@@ -87,9 +87,11 @@ export const getAdminOrders = (page = 1) => {
 
 // 編輯單一訂單
 export const updateAdminOrder = (id, content) => {
-  return axios.put(`${apiUrl}/api/${apiPath}/admin/order/${id}`, {
-    data: content,
-  });
+  return axios.put(
+    `${apiUrl}/api/${apiPath}/admin/order/${id}`,
+    { data: content },
+    getHeaders(),
+  );
 };
 
 // 刪除單一訂單

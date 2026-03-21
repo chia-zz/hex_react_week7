@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 
 const AdmLinks = [
-  { title: '訂單管理', url: '/orders' },
   { title: '商品管理', url: '/products' },
+  { title: '訂單管理', url: '/orders' },
   { title: '圖片管理', url: '/images' },
 ];
 

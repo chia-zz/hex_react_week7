@@ -1,8 +1,8 @@
 import { createHashRouter } from 'react-router-dom';
 import App from '../App.jsx';
 // Layouts
-import FrontLayout from '../assets/layout/FrontLayout.jsx';
-import AdminLayout from '../assets/layout/AdminLayout.jsx';
+import FrontLayout from '../layout/FrontLayout.jsx';
+import AdminLayout from '../layout/AdminLayout.jsx';
 // 前台
 import Home from '../pages/front/Home.jsx';
 import Product from '../pages/front/ProductList.jsx';
@@ -16,6 +16,7 @@ import AdmOrder from '../pages/admin/AdmOrder.jsx';
 import AdmProducts from '../pages/admin/AdmProducts.jsx';
 // import AdmImages from '../pages/admin/AdmImages.jsx';
 import AdmNotFound404 from '../pages/admin/AdmNotFound404.jsx';
+import ProtectedRouter from '../components/admin/ProtectedRouter.jsx';
 
 export const router = createHashRouter([
   {
@@ -34,7 +35,8 @@ export const router = createHashRouter([
           { path: 'checkout', element: <Checkout /> },
           { path: '*', element: <NotFound404 /> },
         ],
-      }, // 後台登入頁
+      },
+      // 後台登入頁
       {
         path: '/admin/login',
         element: <AdmLogin />,
@@ -42,9 +44,13 @@ export const router = createHashRouter([
       // 後台
       {
         path: '/admin',
-        element: <AdminLayout />,
+        element: (
+          <ProtectedRouter>
+            <AdminLayout />
+          </ProtectedRouter>
+        ),
         children: [
-          { index: true, element: <AdmOrder /> },
+          { index: true, element: <AdmProducts /> },
           { path: 'orders', element: <AdmOrder /> },
           { path: 'products', element: <AdmProducts /> },
           // { path: 'images', element: <AdmImages /> },

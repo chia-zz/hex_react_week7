@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
 import { adminSignin } from '../../api/ApiAdmin';
 import { useForm } from 'react-hook-form';
+import useMessage from '../../hooks/useMessage';
 
 function LoginPage() {
   const navigate = useNavigate(); // 建立 navigate router
   const [isAuth, setIsAuth] = useState(false);
-  // const [formData, setFormData] = useState({ username: '', password: '' });
+  // redux
+  const { showError, showSuccess } = useMessage();
 
   // 登入驗證設定
   const {
@@ -22,14 +23,6 @@ function LoginPage() {
     },
   });
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData((preData) => ({
-  //     ...preData,
-  //     [name]: value,
-  //   }));
-  // };
-
   const onSubmit = async (formData) => {
     // if (e) e.preventDefault();
     try {
@@ -38,18 +31,16 @@ function LoginPage() {
       // cookie & token setting
       document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
       // axios.defaults.headers.common["Authorization"] = token;
-      // console.log(res.data);
-      toast.success('登入成功');
+      showSuccess('登入成功');
       navigate('/admin');
     } catch (error) {
-      toast.error(`登入失敗: ${error.response?.data.message}`);
+      showError(`登入失敗: ${error.response?.data.message}`);
       setIsAuth(false);
     }
   };
 
   return (
     <>
-      <ToastContainer />
       <div className='container login'>
         <h2 className='text-sec-500'>請先登入</h2>
         <form className='form-floating' onSubmit={handleSubmit(onSubmit)}>
@@ -59,6 +50,7 @@ function LoginPage() {
               className='form-control'
               name='username'
               id='username'
+              autoComplete='username'
               placeholder='name@gmail.com'
               {...register('username', {
                 required: '請輸入 Email',
@@ -83,6 +75,7 @@ function LoginPage() {
               className='form-control'
               name='password'
               id='password'
+              autoComplete='current-password'
               placeholder='12345678'
               {...register('password', {
                 required: '請輸入密碼',

@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-// API
+import useMessage from '../../hooks/useMessage';
 import { getProductDetail, addCart } from '../../api/ApiClient';
-// 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 function ProductDetail() {
@@ -16,6 +13,7 @@ function ProductDetail() {
   const [loadingCartId, setLoadingCartId] = useState(null);
   // 購物車數量設定
   const [count, setCount] = useState(1);
+  const { showError, showSuccess } = useMessage();
 
   useEffect(() => {
     const getProductIdDetail = async (id) => {
@@ -25,7 +23,7 @@ function ProductDetail() {
         // console.log('API 回傳ID資料:', res.data);
         setProduct(res.data.product);
       } catch (error) {
-        console.log('取得ID失敗', error);
+        showError('取得ID失敗', error);
       } finally {
         setIsLoading(false);
       }
@@ -51,10 +49,10 @@ function ProductDetail() {
     setLoadingCartId(id);
     try {
       await addCart(id, qty);
-      toast.success('成功加入購物車！');
+      showSuccess('成功加入購物車！');
       setCount(1); // 重置數量
     } catch (error) {
-      toast.error('加入失敗', error);
+      showError('加入失敗', error);
     } finally {
       setLoadingCartId(null);
     }

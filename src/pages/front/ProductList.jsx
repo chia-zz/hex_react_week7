@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import useMessage from '../../hooks/useMessage';
 
 // API
 import { getProducts, getAllProducts, addCart } from '../../api/ApiClient';
@@ -21,8 +20,7 @@ function ProductList() {
   // category
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('');
-  // // 產品 id
-  // const [productId, setProductId] = useState(null);
+  const { showError, showSuccess } = useMessage();
 
   // API
   // 取得商品分類分頁資料
@@ -34,7 +32,7 @@ function ProductList() {
       setProducts(Object.values(res.data.products));
       setPagination(res.data.pagination);
     } catch (error) {
-      toast.error('取得資料失敗', error);
+      showError('取得資料失敗', error);
       // navigate("/");
     } finally {
       setIsLoading(false);
@@ -78,9 +76,9 @@ function ProductList() {
     try {
       await addCart(id, qty);
       // console.log('加入購物車資料:', res.data);
-      toast.success('成功加入購物車！');
+      showSuccess('成功加入購物車！');
     } catch (error) {
-      toast.error('加入失敗', error);
+      showError('加入失敗', error);
     } finally {
       setLoadingCartId(null);
     }

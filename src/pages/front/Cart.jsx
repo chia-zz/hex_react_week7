@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import useMessage from '../../hooks/useMessage';
 // API
 import {
   getCart,
@@ -19,18 +19,17 @@ function Cart() {
   const [total, setTotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  // const [cartLoading, setCartLoading] = useState(false);
+  const { showError, showSuccess } = useMessage();
 
   // 取得購物車內容
   const getAllCart = async () => {
     try {
       const res = await getCart();
-      // console.log('購物車 API 回傳:', res.data);
       setCartItem(res.data.data.carts);
       setTotal(res.data.data.total);
       setFinalTotal(res.data.data.final_total);
     } catch (error) {
-      console.error('購物車內容載入失敗', error);
+      showError('購物車內容載入失敗', error);
     }
   };
 
@@ -45,11 +44,11 @@ function Cart() {
     }
     try {
       await editCart(item.id, item.product_id, qty);
-      toast.success('數量已更新');
+      showSuccess('數量已更新');
       getAllCart();
     } catch (error) {
       console.error('更新失敗', error);
-      toast.error('更新失敗');
+      showError('更新失敗');
     }
   };
 
@@ -59,7 +58,7 @@ function Cart() {
       const isConfirm = window.confirm('確定要移除該商品嗎？');
       if (isConfirm) {
         await deleteCart(cartId);
-        toast.success('已刪除該商品');
+        showSuccess('已刪除該商品');
         getAllCart();
       }
     } catch (error) {
@@ -73,7 +72,7 @@ function Cart() {
       const isConfirm = window.confirm('確定要清空購物車嗎？');
       if (isConfirm) {
         await deleteAllCart();
-        toast.success('購物車已清空');
+        showSuccess('購物車已清空');
         getAllCart();
       }
     } catch (error) {

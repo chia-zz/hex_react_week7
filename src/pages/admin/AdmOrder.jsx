@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-// import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import useMessage from '../../hooks/useMessage';
 
 // API
 import {
@@ -14,8 +12,8 @@ import {
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Pagination from '../../components/Pagination';
-import DetailModal from '../../components/DetailModal';
-import ProductModal from '../../components/ProductModal';
+import DetailModal from '../../components/admin/DetailModal';
+import ProductModal from '../../components/admin/ProductModal';
 
 function AdmOrder() {
   // const navigate = useNavigate();
@@ -23,6 +21,8 @@ function AdmOrder() {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [pagination, setPagination] = useState({});
+  // redux
+  const { showError } = useMessage();
 
   const [Order, setOrder] = useState([]);
   // API
@@ -35,7 +35,7 @@ function AdmOrder() {
       setOrder(res.data.orders);
       setPagination(res.data.pagination);
     } catch (error) {
-      toast.error('取得資料失敗', error);
+      showError('取得資料失敗', error);
       // navigate('/');
     } finally {
       setLoadingData(null);

@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import useMessage from '../../hooks/useMessage';
 
 // API
 import {
@@ -11,16 +9,16 @@ import {
   addProduct,
   updateProduct,
 } from '../../api/ApiAdmin';
-
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Pagination from '../../components/Pagination';
-import DetailModal from '../../components/DetailModal';
-import ProductModal from '../../components/ProductModal';
+import DetailModal from '../../components/admin/DetailModal';
+import ProductModal from '../../components/admin/ProductModal';
+// redux
+import { useDispatch } from 'react-redux';
+import { createAsyncMessage } from '../../store/slices/messageSlice';
 
 function AdmProducts() {
-  const navigate = useNavigate();
-
   // 新增商品格式
   const addNewProduct = {
     title: '',
@@ -45,6 +43,9 @@ function AdmProducts() {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create');
+  // redux
+  const dispatch = useDispatch();
+  const { showError, showSuccess } = useMessage();
 
   // detailModal
   const openDetailModal = (product) => {
@@ -72,8 +73,7 @@ function AdmProducts() {
       setProducts(Object.values(res.data.products));
       setPagination(res.data.pagination);
     } catch (error) {
-      toast.error('取得資料失敗', error);
-      navigate('/');
+      dispatch(createAsyncMessage(error.response.data));
     } finally {
       setLoadingData(null);
     }
@@ -97,11 +97,11 @@ function AdmProducts() {
       const isConfirm = window.confirm('確定要移除該商品嗎？');
       if (isConfirm) {
         const res = await deleteProduct(id);
-        toast.success('刪除成功', res.data);
+        showSuccess('刪除成功', res.data);
         getData();
       }
     } catch (error) {
-      toast.error('刪除失敗', error);
+      showError('刪除失敗', error);
     }
   };
   const handleUpload = async (e) => {
@@ -112,20 +112,20 @@ function AdmProducts() {
     }
     // 限制檔案大小
     if (file.size > 3 * 1024 * 1024) {
-      toast.error('檔案不能超過 3MB');
+      showError('檔案不能超過 3MB');
       return;
     }
     try {
       const formData = new FormData();
       formData.append('file-to-upload', file);
       const res = await uploadImage(formData);
-      toast.success('上傳成功');
+      showSuccess('上傳成功');
       setTempProduct((pre) => ({
         ...pre,
         imageUrl: res.data.imageUrl,
       }));
     } catch (error) {
-      toast.error('上傳失敗', error);
+      showError('上傳失敗', error);
     }
   };
 
@@ -176,11 +176,22 @@ function AdmProducts() {
       } else {
         await updateProduct(tempProduct.id, tempProduct);
       }
-      toast.success(`${modalMode === 'create' ? '新增' : '更新'}成功`);
+      // dispatch(
+      //   createAsyncMessage({
+      //     success: true,
+      //     message: `${modalMode === 'create' ? '新增' : '更新'}成功`,
+      //   }),
+      // );
+      showSuccess(`${modalMode === 'create' ? '新增' : '更新'}成功`);
       setIsProductModalOpen(false);
       getData();
     } catch {
-      toast.error('更新失敗');
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: `${modalMode === 'create' ? '新增' : '更新'}失敗`,
+        }),
+      );
     } finally {
       setIsLoading(false);
     }
