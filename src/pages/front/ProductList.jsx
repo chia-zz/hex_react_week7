@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useMessage from '../../hooks/useMessage';
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../../store/slices/cartSlice';
 
 // API
 import { getProducts, getAllProducts, addCart } from '../../api/ApiClient';
@@ -21,6 +23,7 @@ function ProductList() {
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState('');
   const { showError, showSuccess } = useMessage();
+  const dispatch = useDispatch();
 
   // API
   // 取得商品分類分頁資料
@@ -77,6 +80,7 @@ function ProductList() {
       await addCart(id, qty);
       // console.log('加入購物車資料:', res.data);
       showSuccess('成功加入購物車！');
+      dispatch(renderRefresh());
     } catch (error) {
       showError('加入失敗', error);
     } finally {
@@ -86,20 +90,20 @@ function ProductList() {
 
   return (
     <div className='container'>
-      {isLoading ? (
-        <div className='d-flex flex-column justify-content-center align-items-center my-5'>
-          <LoadingSpinner />
-          <p className='text-primary fs-3 mt-2'>資料載入中</p>
-        </div>
-      ) : (
-        <>
+      <div className='d-flex flex-column justify-content-center align-items-center my-5'>
+        <h1 className='text-primary-800 mb-4'>植感圖鑑</h1>
+        <CategoryNav
+          categories={categories}
+          activeCategory={currentCategory}
+          onChangeCategory={handleCategoryChange}
+        />{' '}
+        {isLoading ? (
           <div className='d-flex flex-column justify-content-center align-items-center my-5'>
-            <h1 className='text-primary-800 mb-4'>植感圖鑑</h1>
-            <CategoryNav
-              categories={categories}
-              activeCategory={currentCategory}
-              onChangeCategory={handleCategoryChange}
-            />
+            <LoadingSpinner />
+            <p className='text-primary fs-3 mt-2'>資料載入中</p>
+          </div>
+        ) : (
+          <>
             <div className='container'>
               <div className='row g-3'>
                 {products.map((item) => (
@@ -165,10 +169,10 @@ function ProductList() {
                   onChangePage={handlePageChange}
                 />
               </div>
-            </div>
-          </div>
-        </>
-      )}
+            </div>{' '}
+          </>
+        )}
+      </div>
     </div>
   );
 }

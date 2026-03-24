@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import CartDropdown from '../components/CartDropdown';
 
 const NavbarData = {
   brand: {
@@ -7,11 +8,11 @@ const NavbarData = {
     url: '/',
   },
   mainLinks: [
-    { title: '首頁', url: '/' },
-    { title: '產品', url: '/product' },
-    { title: '購物車', url: '/cart' },
-    { title: '結帳', url: '/checkout' },
-    { title: '後台', url: '/admin/login' },
+    { icon: 'bi-house-door', title: '首頁', url: '/' },
+    { icon: 'bi-box-seam', title: '產品', url: '/product' },
+    // { icon: 'bi-cart3', title: '購物車', url: '/cart' },
+    { icon: 'bi-cash-stack', title: '結帳', url: '/checkout' },
+    { icon: 'bi-person-gear', title: '後台', url: '/admin/login' },
   ],
 };
 
@@ -64,16 +65,17 @@ function Header() {
                       className={({ isActive }) =>
                         `home-btn ${isActive ? 'home-btn--active' : ''}`
                       }
+                      title={link.title}
                     >
-                      {link.title}
+                      <i className={`bi ${link.icon}`}></i>
                     </NavLink>
                   ))}
                   <svg
                     className='home-outline'
                     overflow='visible'
-                    width='500'
+                    width='400'
                     height='48'
-                    viewBox='0 0 500 48'
+                    viewBox='0 0 400 48'
                     xmlns='http://www.w3.org/2000/svg'
                   >
                     <rect
@@ -81,7 +83,7 @@ function Header() {
                       pathLength='100'
                       x='0'
                       y='0'
-                      width='500'
+                      width='400'
                       height='48'
                       fill='transparent'
                       strokeWidth='5'
@@ -89,6 +91,7 @@ function Header() {
                   </svg>
                 </div>
               </div>
+              <CartDropdown />
             </div>
 
             {/* mobile */}

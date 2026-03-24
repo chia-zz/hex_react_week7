@@ -3,17 +3,21 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useMessage from '../../hooks/useMessage';
 import { getProductDetail, addCart } from '../../api/ApiClient';
 import LoadingSpinner from '../../components/LoadingSpinner';
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../../store/slices/cartSlice';
 
 function ProductDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState({});
   // loading spinner 設定
   const [isLoading, setIsLoading] = useState(false);
   const [loadingCartId, setLoadingCartId] = useState(null);
   // 購物車數量設定
   const [count, setCount] = useState(1);
+  const [mainImage, setMainImage] = useState('');
   const { showError, showSuccess } = useMessage();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProductIdDetail = async (id) => {
@@ -30,6 +34,11 @@ function ProductDetail() {
     };
     getProductIdDetail(id);
   }, [id]);
+  useEffect(() => {
+    if (product.imageUrl) {
+      setMainImage(product.imageUrl);
+    }
+  }, [product]);
 
   // 購物車數量
   const handleAdd = () => {
@@ -50,6 +59,7 @@ function ProductDetail() {
     try {
       await addCart(id, qty);
       showSuccess('成功加入購物車！');
+      dispatch(renderRefresh());
       setCount(1); // 重置數量
     } catch (error) {
       showError('加入失敗', error);
@@ -71,24 +81,41 @@ function ProductDetail() {
             <div className='text-start my-3'>
               <button
                 type='button'
-                className='btn btn-primary-400 text-primary-100'
+                className='btn btn-outline-primary border-0 '
                 onClick={handlePrevPage}
               >
                 <i className='bi bi-chevron-left me-1'></i>回上一頁
               </button>
             </div>
-            <div className='row g-5' key={product.id}>
+            <div className='row g-5 d-flex align-items-center' key={product.id}>
               <div className='col-md-6'>
                 <img
-                  src={product.imageUrl}
+                  src={mainImage || product.imageUrl}
                   className='card-img-top productDetail-img'
                   alt={product.title}
                 />
+                <div className='d-flex justify-content-center mt-3 gap-1 overflow-auto p-1 rounded-2'>
+                  {product.imagesUrl?.map((url, index) => (
+                    <img
+                      key={index}
+                      src={url}
+                      alt={`${product.title} 附圖 ${index + 1}`}
+                      style={{
+                        width: '80px',
+                        height: '80px',
+                        cursor: 'pointer',
+                        objectFit: 'cover',
+                      }}
+                      className='rounded-2'
+                      onClick={() => setMainImage(url)}
+                    />
+                  ))}
+                </div>
               </div>
               <div className='col-md-6'>
                 <div className='productDetail-card'>
-                  <div className='mb-3'>
-                    <span className='bg-tert-700 text-sec-50 p-2 rounded-2'>
+                  <div className='mb-2'>
+                    <span className='bg-tert-700 text-sec-50 py-1 px-2 rounded-4'>
                       {product.category}
                     </span>
                   </div>

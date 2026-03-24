@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import useMessage from '../../hooks/useMessage';
+import { useDispatch } from 'react-redux';
+import { renderRefresh } from '../../store/slices/cartSlice';
 // API
 import {
   getCart,
@@ -20,6 +22,7 @@ function Cart() {
   const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const { showError, showSuccess } = useMessage();
+  const dispatch = useDispatch();
 
   // 取得購物車內容
   const getAllCart = async () => {
@@ -46,6 +49,7 @@ function Cart() {
       await editCart(item.id, item.product_id, qty);
       showSuccess('數量已更新');
       getAllCart();
+      dispatch(renderRefresh());
     } catch (error) {
       console.error('更新失敗', error);
       showError('更新失敗');
@@ -60,6 +64,7 @@ function Cart() {
         await deleteCart(cartId);
         showSuccess('已刪除該商品');
         getAllCart();
+        dispatch(renderRefresh());
       }
     } catch (error) {
       console.log('刪除失敗', error);
@@ -74,6 +79,7 @@ function Cart() {
         await deleteAllCart();
         showSuccess('購物車已清空');
         getAllCart();
+        dispatch(renderRefresh());
       }
     } catch (error) {
       console.error('清空失敗', error);
@@ -184,7 +190,7 @@ function Cart() {
                       <td>
                         <button
                           type='button'
-                          className='btn btn-danger btn-sm'
+                          className='btn btn-error btn-sm'
                           onClick={() => removeCartItem(item.id)}
                         >
                           <i className='bi bi-trash'></i> 刪除
