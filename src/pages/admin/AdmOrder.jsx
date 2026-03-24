@@ -12,8 +12,7 @@ import {
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Pagination from '../../components/Pagination';
-import DetailModal from '../../components/admin/DetailModal';
-import ProductModal from '../../components/admin/ProductModal';
+import OrderDetail from '../../components/admin/OrderDetail';
 
 function AdmOrder() {
   // const navigate = useNavigate();
@@ -25,6 +24,9 @@ function AdmOrder() {
   const { showError } = useMessage();
 
   const [Order, setOrder] = useState([]);
+  const [tempOrder, setTempOrder] = useState([]);
+  const [isOrderDetailOpen, setIsOrderDetailOpen] = useState(false);
+
   // API
   // 取得訂單資料
   const getOrder = async (page = 1) => {
@@ -56,6 +58,16 @@ function AdmOrder() {
   }, []);
 
   // 處理訂單欄位
+  // detailModal
+  const openOrderDetail = (order) => {
+    setTempOrder(order);
+    setIsOrderDetailOpen(true);
+  };
+
+  const closeOrderDetail = () => {
+    setIsOrderDetailOpen(false);
+    // setTempProduct(null);
+  };
   // 時間轉換
   const formatDate = (timestamp) => {
     return new Date(timestamp * 1000).toLocaleDateString();
@@ -118,7 +130,11 @@ function AdmOrder() {
                 </thead>
                 <tbody>
                   {Order.map((item) => (
-                    <tr key={item.id}>
+                    <tr
+                      key={item.id}
+                      onClick={() => openOrderDetail(item)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <td>{formatDate(item.create_at)}</td>
                       <td>{orderId(item.id)}</td>
                       <td>{item.total.toLocaleString()}</td>
@@ -135,6 +151,11 @@ function AdmOrder() {
                 </tbody>
               </table>
               <Pagination pagination={pagination} onChangePage={getOrder} />
+              <OrderDetail
+                isOpen={isOrderDetailOpen}
+                tempOrder={tempOrder}
+                onClose={closeOrderDetail}
+              />
             </div>
           </div>
         )}
