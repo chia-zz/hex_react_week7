@@ -258,7 +258,11 @@ function AdmProducts() {
               </thead>
               <tbody>
                 {products.map((item) => (
-                  <tr key={item.id}>
+                  <tr
+                    key={item.id}
+                    onClick={() => openDetailModal(item)}
+                    style={{ cursor: 'pointer' }}
+                  >
                     <td>{item.title}</td>
                     <td>{item.origin_price.toLocaleString()}</td>
                     <td>{item.price.toLocaleString()}</td>
