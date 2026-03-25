@@ -18,8 +18,6 @@ function NewArrival() {
     const getData = async (page = 1, category = '') => {
       try {
         const res = await getProducts(page, category);
-        console.log('API 回傳資料:', res.data);
-
         setProducts(Object.values(res.data.products));
       } catch (error) {
         showError('取得資料失敗', error);
@@ -27,6 +25,8 @@ function NewArrival() {
     };
     getData();
   }, []);
+
+  // 抓最新上架
   const latestProducts = Object.entries(products)
     .map(([id, data]) => ({
       id,
@@ -34,15 +34,13 @@ function NewArrival() {
     }))
     .sort((a, b) => b.create_at - a.create_at)
     .slice(0, 4);
-  console.log('回傳資料:', latestProducts);
 
   // 加入購物車(單一數量)
   const addCartBtn = async (id = '', qty = 1) => {
     setLoadingCartId(id);
     try {
       await addCart(id, qty);
-      // console.log('加入購物車資料:', res.data);
-      showSuccess('成功加入購物車！');
+      showSuccess('加入購物車！');
       dispatch(renderRefresh());
     } catch (error) {
       showError('加入失敗', error);
@@ -64,7 +62,7 @@ function NewArrival() {
                   to={`/product/${product.id}`}
                   className='text-decoration-none'
                 >
-                  <div className='card h-100 rounded-4 overflow-hidden'>
+                  <div className='card list-card h-100 rounded-4 overflow-hidden'>
                     <div className='position-relative overflow-hidden'>
                       <span className='badge rounded-pill bg-tert-600 text-primary-50 position-absolute top-0 start-0 mt-3 ms-3 z-3'>
                         最新上架

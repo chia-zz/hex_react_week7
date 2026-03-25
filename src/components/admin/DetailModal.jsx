@@ -32,58 +32,11 @@ function DetailModal({ tempProduct, isOpen, onClose }) {
             <div className='modal-body p-4'>
               {tempProduct ? (
                 <>
-                  {/* 圖片區 */}
-                  <div className='p-3 mb-3 rounded-3 bg-sec-50 border border-sec-200'>
-                    <div className='row g-2'>
-                      <div className='col-8'>
-                        {tempProduct.imageUrl ? (
-                          <img
-                            src={tempProduct.imageUrl}
-                            alt={tempProduct.title}
-                            className='rounded-3 w-100'
-                            style={{ height: '300px', objectFit: 'cover' }}
-                          />
-                        ) : (
-                          <div
-                            className='bg-sec-100 rounded-3 d-flex justify-content-center align-items-center'
-                            style={{ height: '300px' }}
-                          >
-                            <span className='text-sec-400'>暫無圖片</span>
-                          </div>
-                        )}
-                      </div>
-                      <div className='col-4 d-flex flex-column gap-2'>
-                        {tempProduct.imagesUrl?.length > 0 ? (
-                          tempProduct.imagesUrl
-                            .slice(0, 3)
-                            .map((url, index) => (
-                              <img
-                                key={index}
-                                src={url}
-                                alt={`附圖 ${index + 1}`}
-                                className='rounded-2 w-100'
-                                style={{
-                                  flex: 1,
-                                  objectFit: 'cover',
-                                  minHeight: 0,
-                                }}
-                              />
-                            ))
-                        ) : (
-                          <div className='text-sec-400 d-flex align-items-center justify-content-center h-100'>
-                            無副圖
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* 標題 + 分類 */}
-                    <div className='mt-3'>
-                      <span className='badge bg-sec-800 fw-medium mb-2'>
-                        {tempProduct.category}
-                      </span>
-                      <h4 className='fw-bold mb-0'>{tempProduct.title}</h4>
-                    </div>
+                  <div className='d-flex align-items-center text-start gap-3 mt-3'>
+                    <h2 className='fw-bold'>{tempProduct.title}</h2>
+                    <span className='badge bg-sec-800 fw-medium'>
+                      {tempProduct.category}
+                    </span>
                   </div>
 
                   {/* 商品資訊 */}
@@ -137,7 +90,6 @@ function DetailModal({ tempProduct, isOpen, onClose }) {
                       </div>
                     </div>
                   </div>
-
                   {/* 環境需求 */}
                   <div className='rounded-3 bg-sec-50 border border-sec-200 overflow-hidden'>
                     <h6 className='fw-bold p-2 mb-3 bg-sec-500 text-sec-100 d-flex align-items-center gap-2'>
@@ -163,6 +115,44 @@ function DetailModal({ tempProduct, isOpen, onClose }) {
                         <p className='mb-0'>
                           {tempProduct.environment?.humidity_range}
                         </p>
+                      </div>
+                    </div>
+                  </div>
+                  {/* 圖片區 */}
+                  <div className='rounded-3 bg-sec-50 border border-sec-200 overflow-hidden my-4'>
+                    <h6 className='fw-bold p-2 bg-sec-500 text-sec-100 d-flex align-items-center'>
+                      <i className='bi bi-camera'></i> 圖片
+                    </h6>
+                    <div className='row g-2'>
+                      <div className='col-3'>
+                        {tempProduct.imageUrl ? (
+                          <img
+                            src={tempProduct.imageUrl}
+                            alt={tempProduct.title}
+                            className='rounded-3 w-100'
+                            style={{ height: '300px', objectFit: 'cover' }}
+                          />
+                        ) : (
+                          <div
+                            className='bg-sec-100 rounded-3 d-flex justify-content-center align-items-center'
+                            style={{ height: '300px' }}
+                          >
+                            <span className='text-sec-400'>暫無圖片</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className='col-3 d-flex gap-2'>
+                        {tempProduct.imagesUrl.map((url, index) => (
+                          <img
+                            key={index}
+                            src={url}
+                            alt={`附圖 ${index + 1}`}
+                            className='rounded-2 w-100'
+                            style={{
+                              objectFit: 'cover',
+                            }}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>

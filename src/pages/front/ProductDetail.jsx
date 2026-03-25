@@ -1,30 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import useMessage from '../../hooks/useMessage';
-import { getProductDetail, addCart } from '../../api/ApiClient';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import useMessage from '../../hooks/useMessage';
+// API
+import { getProductDetail, addCart } from '../../api/ApiClient';
+// 元件
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { renderRefresh } from '../../store/slices/cartSlice';
 
 function ProductDetail() {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const [product, setProduct] = useState({});
-  // loading spinner 設定
+  const [product, setProduct] = useState({
+    difficulty: {},
+    environment: {},
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [loadingCartId, setLoadingCartId] = useState(null);
-  // 購物車數量設定
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(1); // 購物車數量設定
   const [mainImage, setMainImage] = useState('');
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { showError, showSuccess } = useMessage();
   const dispatch = useDispatch();
 
+  // 取得商品詳情
   useEffect(() => {
-    const getProductIdDetail = async (id) => {
+    const getProductIdDetail = async (targetId) => {
       try {
         setIsLoading(true);
-        const res = await getProductDetail(id);
-        // console.log('API 回傳ID資料:', res.data);
+        const res = await getProductDetail(targetId);
         setProduct(res.data.product);
       } catch (error) {
         showError('取得ID失敗', error);
@@ -32,32 +35,38 @@ function ProductDetail() {
         setIsLoading(false);
       }
     };
-    getProductIdDetail(id);
-  }, [id]);
+    if (id) {
+      getProductIdDetail(id);
+    }
+  }, [id, showError]);
+
+  // 預設主圖為大圖
   useEffect(() => {
     if (product.imageUrl) {
       setMainImage(product.imageUrl);
     }
   }, [product]);
 
-  // 購物車數量
+  // 購物車數量邏輯
   const handleAdd = () => {
     setCount((prevCount) => prevCount + 1);
   };
+
   const handleReduce = () => {
     // 不能小於 1
     setCount((prevCount) => (prevCount === 1 ? 1 : prevCount - 1));
   };
+
   // 回上一頁
   const handlePrevPage = () => {
     navigate(-1);
   };
 
   // 加入購物車
-  const addCartBtn = async (id, qty) => {
-    setLoadingCartId(id);
+  const addCartBtn = async (productId, qty) => {
+    setLoadingCartId(productId);
     try {
-      await addCart(id, qty);
+      await addCart(productId, qty);
       showSuccess('成功加入購物車！');
       dispatch(renderRefresh());
       setCount(1); // 重置數量
@@ -87,8 +96,11 @@ function ProductDetail() {
                 <i className='bi bi-chevron-left me-1'></i>回上一頁
               </button>
             </div>
-            <div className='row g-5 d-flex align-items-center' key={product.id}>
-              <div className='col-md-6'>
+            <div className='row g-5 position-relative' key={product.id}>
+              <div
+                className='col-md-6 position-sticky'
+                style={{ top: '108px', alignSelf: 'flex-start' }}
+              >
                 <img
                   src={mainImage || product.imageUrl}
                   className='card-img-top productDetail-img'
@@ -134,6 +146,7 @@ function ProductDetail() {
                       </del>
                     </small>
                   </p>
+
                   {/* 數量 + 加入購物車 */}
                   <div className='d-flex align-items-center gap-2 mt-3'>
                     <div className='d-flex justify-content-between align-items-center gap-2'>
@@ -166,11 +179,9 @@ function ProductDetail() {
                         disabled={loadingCartId === product.id}
                       >
                         {loadingCartId === product.id ? (
-                          <>
-                            <div className='d-flex justify-content-center w-100'>
-                              <LoadingSpinner spinner='RotatingLines' />
-                            </div>
-                          </>
+                          <div className='d-flex justify-content-center w-100'>
+                            <LoadingSpinner spinner='RotatingLines' />
+                          </div>
                         ) : (
                           '加入購物車'
                         )}
@@ -187,45 +198,43 @@ function ProductDetail() {
                         <h5>
                           <i className='bi bi-star me-2'></i>照顧難度
                         </h5>
-                        <p>{product.difficulty.stars}</p>
+                        <p>{product.difficulty?.stars}</p>
                       </div>
                       <div className='col-6'>
                         <h5>
                           <i className='bi bi-magic me-2'></i>照顧技巧
                         </h5>
-                        <p>{product.difficulty.note}</p>
+                        <p>{product.difficulty?.note}</p>
                       </div>
                       <div className='col-6'>
                         <h5>
                           <i className='bi bi-sun me-2'></i>光照需求
                         </h5>
-                        <p>{product.environment.light}</p>
+                        <p>{product.environment?.light}</p>
                       </div>
                       <div className='col-6'>
                         <h5>
                           <i className='bi bi-droplet-half me-2'></i>水分需求
                         </h5>
-                        <p>{product.environment.water}</p>
+                        <p>{product.environment?.water}</p>
                       </div>
                       <div className='col-6'>
                         <h5>
                           <i className='bi bi-cloud-haze2 me-2'></i>濕度等級
                         </h5>
-                        <p>{product.environment.humidity_level}</p>
+                        <p>{product.environment?.humidity_level}</p>
                       </div>
                       <div className='col-6'>
-                        {' '}
                         <h5>
                           <i className='bi bi-house-heart me-2'></i>濕度範圍
                         </h5>
-                        <p>{product.environment.humidity_range}</p>
+                        <p>{product.environment?.humidity_range}</p>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className='d-flex justify-content-center mt-4'></div>
           </div>
         )}
       </div>

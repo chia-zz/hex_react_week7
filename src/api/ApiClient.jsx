@@ -68,3 +68,8 @@ export const submitOrder = (data) => {
     data,
   });
 };
+
+// 優惠券
+export const clientCoupon = (coupon) => {
+  return axios.post(`${apiUrl}/api/${apiPath}/coupon`, { data: coupon });
+};

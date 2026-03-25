@@ -31,7 +31,6 @@ function ProductList() {
     setIsLoading(true);
     try {
       const res = await getProducts(page, category);
-      // console.log('API 回傳資料:', res.data);
       setProducts(Object.values(res.data.products));
       setPagination(res.data.pagination);
     } catch (error) {
@@ -51,7 +50,7 @@ function ProductList() {
       ];
       setCategories(categoryList);
     } catch (error) {
-      console.log('取得分類失敗', error.message.data);
+      showError('取得分類失敗', error.message.data);
     }
   };
 
@@ -78,8 +77,7 @@ function ProductList() {
     setLoadingCartId(id);
     try {
       await addCart(id, qty);
-      // console.log('加入購物車資料:', res.data);
-      showSuccess('成功加入購物車！');
+      showSuccess('加入購物車！');
       dispatch(renderRefresh());
     } catch (error) {
       showError('加入失敗', error);

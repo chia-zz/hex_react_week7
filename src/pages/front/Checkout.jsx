@@ -2,8 +2,14 @@ import { useState, useEffect } from 'react';
 import useMessage from '../../hooks/useMessage';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  renderRefresh,
+  setCartData,
+  selectNeedsRefresh,
+} from '../../store/slices/cartSlice';
 // API
-import { getCart, submitOrder } from '../../api/ApiClient';
+import { getCart, submitOrder, clientCoupon } from '../../api/ApiClient';
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 
@@ -14,7 +20,12 @@ function Checkout() {
   const [total, setTotal] = useState(0);
   const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const { showError, showSuccess } = useMessage();
+  const needsRefresh = useSelector(selectNeedsRefresh);
+  const [couponCode, setCouponCode] = useState('');
+  const [discountPrice, setDiscountPrice] = useState(0);
+  const [shippingFee, setShippingFee] = useState(0);
 
   // 取得購物車內容
   const getAllCart = async () => {
@@ -23,13 +34,50 @@ function Checkout() {
       const res = await getCart();
       setCartItem(res.data.data.carts);
       setTotal(res.data.data.total);
-      setFinalTotal(res.data.data.final_total);
+      setFinalTotal(res.data.data.total);
+      setDiscountPrice(0);
+      setCouponCode('');
+      dispatch(setCartData(res.data.data));
     } catch (error) {
       showError('購物車內容載入失敗', error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // 處理優惠券
+  const applyCoupon = async () => {
+    if (!couponCode.trim()) {
+      showError('請輸入優惠碼');
+      return;
+    }
+    try {
+      const res = await clientCoupon({
+        code: couponCode.toUpperCase(),
+      });
+      const discountPrice = Math.round(total - res.data.data.final_total);
+      const discountFinalPrice = Math.round(res.data.data.final_total);
+      setDiscountPrice(discountPrice);
+      setFinalTotal(discountFinalPrice);
+      showSuccess(`優惠券套用成功！折扣後金額 NT$ ${discountFinalPrice}`);
+    } catch (error) {
+      showError('優惠碼無效或已過期', error);
+    }
+  };
+  // 處理運費
+  // 只要 finalTotal 改變，就會觸發重新計算運費
+  useEffect(() => {
+    // 購物車為空時運費為0
+    if (finalTotal === 0) {
+      setShippingFee(0);
+      return;
+    }
+    if (finalTotal >= 1000) {
+      setShippingFee(0);
+    } else {
+      setShippingFee(60);
+    }
+  }, [finalTotal]);
 
   // 表單驗證設定
   const {
@@ -50,7 +98,7 @@ function Checkout() {
 
   useEffect(() => {
     getAllCart();
-  }, []);
+  }, [needsRefresh]);
 
   // 表單 submit
   const onSubmit = async (formData) => {
@@ -63,8 +111,14 @@ function Checkout() {
       showSuccess('訂單送出成功！');
       reset();
       getAllCart();
+      setCouponCode('');
+      setFinalTotal(0);
+      dispatch(renderRefresh());
     } catch (error) {
       showError('送出訂單發生錯誤：', error);
+    } finally {
+      setCouponCode('');
+      setFinalTotal(0);
     }
   };
 
@@ -267,8 +321,23 @@ function Checkout() {
 
                     <h3 className='text-center mt-5'>Coupon</h3>
                     <hr />
-                    <input type='text' />
-                    <button type='submit'></button>
+                    <div className='d-flex gap-2 px-3 mb-3'>
+                      <input
+                        type='text'
+                        className='form-control'
+                        placeholder='請輸入優惠碼'
+                        value={couponCode}
+                        onChange={(e) => setCouponCode(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+                      />
+                      <button
+                        className='btn btn-accent text-nowrap'
+                        type='button'
+                        onClick={applyCoupon}
+                      >
+                        套用
+                      </button>
+                    </div>
 
                     <h3 className='text-center mt-5'>Order Summary</h3>
                     <hr />
@@ -286,14 +355,17 @@ function Checkout() {
                         運費
                         <span className='ms-auto'>
                           <span className='text-error fw-bold me-1'>
-                            <span className='me-1'>NT$</span>0
-                          </span>
-                          /
-                          <span className='fs-sm ms-1'>
-                            <del className='text-sec-700'>NT$&nbsp;60</del>
+                            <span className='me-1'>NT$</span>
+                            {shippingFee}
                           </span>
                         </span>
                       </h5>
+                      <h6 className='d-flex px-3'>
+                        -&nbsp;折扣金額
+                        <span className='ms-auto'>
+                          <span className='me-1'>NT$&nbsp;{discountPrice}</span>
+                        </span>
+                      </h6>
                     </div>
                     <hr />
                     <h3 className='d-flex px-3'>
@@ -301,7 +373,7 @@ function Checkout() {
                       <span className='ms-auto'>
                         NT$
                         <span className='fw-bold ms-1'>
-                          {finalTotal.toLocaleString()}
+                          {(finalTotal + shippingFee).toLocaleString()}
                         </span>
                       </span>
                     </h3>

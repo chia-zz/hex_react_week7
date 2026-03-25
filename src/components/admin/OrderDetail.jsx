@@ -8,6 +8,27 @@ function OrderDetail({ tempOrder, isOpen, onClose }) {
     }
   };
 
+  // 折扣金額轉換
+  const getDiscount = (products) => {
+    const productList = Object.values(products);
+    const coupon = productList.find((item) => item.coupon)?.coupon || null;
+    // 原價加總
+    const originalTotal = productList.reduce(
+      (acc, item) => acc + item.total,
+      0,
+    );
+    // 折扣後的總金額
+    const discountedTotal = productList.reduce(
+      (acc, item) => acc + item.final_total,
+      0,
+    );
+    // 折扣的金額
+    const discountAmount = originalTotal - discountedTotal;
+    return { coupon, originalTotal, discountedTotal, discountAmount };
+  };
+  const { coupon, originalTotal, discountedTotal, discountAmount } =
+    getDiscount(tempOrder.products);
+
   // 時間轉換
   const formatDate = (timestamp) => {
     return new Date(timestamp * 1000).toLocaleDateString();
@@ -135,12 +156,31 @@ function OrderDetail({ tempOrder, isOpen, onClose }) {
                           </div>
                         </div>
                         <div className='col-lg-5'>
-                          <div className='p-3 bg-primary bg-opacity-10 border border-primary border-opacity-25 rounded d-flex flex-column justify-content-center'>
-                            <div className='text-primary fw-semibold mb-1'>
-                              總計金額
+                          <div className='p-3 bg-primary bg-opacity-10 border border-primary border-opacity-25 rounded-3'>
+                            <div className='d-flex justify-content-between mb-1'>
+                              <span className='text-sec-600 small'>
+                                商品原價
+                              </span>
+                              <span>NT$ {originalTotal.toLocaleString()}</span>
                             </div>
-                            <div className=' text-primary-800 fw-bold mb-0'>
-                              NT$ {tempOrder.total.toLocaleString()}
+                            {coupon && (
+                              <div className='d-flex justify-content-between mb-1 text-error'>
+                                <span className='small'>
+                                  優惠折扣（{coupon.code}）
+                                </span>
+                                <span>
+                                  - NT$ {discountAmount.toLocaleString()}
+                                </span>
+                              </div>
+                            )}
+                            <hr className='my-2' />
+                            <div className='d-flex justify-content-between'>
+                              <span className='fw-bold text-primary'>
+                                總計金額
+                              </span>
+                              <span className='fw-bold text-primary fs-5'>
+                                NT$ {discountedTotal.toLocaleString()}
+                              </span>
                             </div>
                           </div>
                         </div>

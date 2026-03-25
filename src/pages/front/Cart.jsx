@@ -23,10 +23,10 @@ import ConfirmModal from '../../components/ConfirmModal';
 function Cart() {
   const [cartItem, setCartItem] = useState([]);
   const [total, setTotal] = useState(0);
-  const [finalTotal, setFinalTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [clearAllCart, setClearAllCart] = useState(null);
+  const [shippingFee, setShippingFee] = useState(0);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,12 +40,26 @@ function Cart() {
       const res = await getCart();
       setCartItem(res.data.data.carts);
       setTotal(res.data.data.total);
-      setFinalTotal(res.data.data.final_total);
       dispatch(setCartData(res.data.data));
     } catch (error) {
       showError('購物車內容載入失敗', error);
     }
   };
+
+  // 處理運費
+  // 只要 finalTotal 改變，就會觸發重新計算運費
+  useEffect(() => {
+    // 購物車為空時運費為0
+    if (total === 0) {
+      setShippingFee(0);
+      return;
+    }
+    if (total >= 1000) {
+      setShippingFee(0);
+    } else {
+      setShippingFee(60);
+    }
+  }, [total]);
 
   // 修改購物車內容
   const updateCartItem = async (item, qty) => {
@@ -180,6 +194,7 @@ function Cart() {
                               className='btn btn-outline-primary border-0'
                               type='button'
                               onClick={() => updateCartItem(item, item.qty - 1)}
+                              disabled={isLoading}
                             >
                               <i className='bi bi-dash-circle'></i>
                             </button>
@@ -192,6 +207,7 @@ function Cart() {
                               className='btn btn-outline-primary border-0'
                               type='button'
                               onClick={() => updateCartItem(item, item.qty + 1)}
+                              disabled={isLoading}
                             >
                               <i className='bi bi-plus-circle'></i>
                             </button>
@@ -230,11 +246,8 @@ function Cart() {
                     運費
                     <span className='ms-auto'>
                       <span className='text-error fw-bold me-1'>
-                        <span className='me-1'>NT$</span>0
-                      </span>
-                      /
-                      <span className='fs-sm ms-1'>
-                        <del className='text-sec-700'>NT$&nbsp;60</del>
+                        <span className='me-1'>NT$</span>
+                        {shippingFee}
                       </span>
                     </span>
                   </h5>
@@ -245,7 +258,7 @@ function Cart() {
                   <span className='ms-auto'>
                     NT$
                     <span className='fw-bold ms-1'>
-                      {finalTotal.toLocaleString()}
+                      {(total + shippingFee).toLocaleString()}
                     </span>
                   </span>
                 </h3>
