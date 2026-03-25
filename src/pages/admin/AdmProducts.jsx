@@ -1,48 +1,27 @@
 import { useState, useEffect } from 'react';
 import useMessage from '../../hooks/useMessage';
-
 // API
 import {
   getAdminProducts,
   deleteProduct,
   uploadImage,
   addProduct,
-  updateProduct,
+  editProduct,
 } from '../../api/ApiAdmin';
 // 元件
 import LoadingSpinner from '../../components/LoadingSpinner';
 import Pagination from '../../components/Pagination';
 import DetailModal from '../../components/admin/DetailModal';
 import ProductModal from '../../components/admin/ProductModal';
+import ConfirmModal from '../../components/ConfirmModal';
 // redux
 import { useDispatch } from 'react-redux';
 import { createAsyncMessage } from '../../store/slices/messageSlice';
 
+// data
+import { addNewProduct } from '../../Data/AdminData';
+
 function AdmProducts() {
-  // 新增商品格式
-  const addNewProduct = {
-    title: '',
-    category: '',
-    origin_price: 0,
-    price: 0,
-    unit: '',
-    description: '',
-    content: '',
-    is_enabled: 1,
-    imageUrl: '',
-    imagesUrl: [],
-    star: 0,
-    difficulty: {
-      stars: 0,
-      note: '',
-    },
-    environment: {
-      light: '',
-      water: '',
-      humidity_level: '',
-      humidity_range: '',
-    },
-  };
   const [products, setProducts] = useState([]);
   // loading spinner 設定
   const [isLoading, setIsLoading] = useState(false);
@@ -53,9 +32,9 @@ function AdmProducts() {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create');
-  // redux
-  const dispatch = useDispatch();
+  const [confirmId, setConfirmId] = useState(null);
   const { showError, showSuccess } = useMessage();
+  const dispatch = useDispatch();
 
   // detailModal
   const openDetailModal = (product) => {
@@ -65,8 +44,8 @@ function AdmProducts() {
 
   const closeDetailModal = () => {
     setIsDetailModalOpen(false);
-    // setTempProduct(null);
   };
+
   // ProductModal
   const openProductModal = (mode, product = addNewProduct) => {
     setModalMode(mode);
@@ -102,18 +81,17 @@ function AdmProducts() {
     init();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const isConfirm = window.confirm('確定要移除該商品嗎？');
-      if (isConfirm) {
-        const res = await deleteProduct(id);
-        showSuccess('刪除成功', res.data);
-        getData();
-      }
+      const res = await deleteProduct(confirmId);
+      showSuccess('刪除成功', res.data);
+      setConfirmId(null);
+      getData();
     } catch (error) {
       showError('刪除失敗', error);
     }
   };
+
   const handleUpload = async (e) => {
     const file = e.target.files?.[0];
     // 如果沒有檔案
@@ -147,6 +125,7 @@ function AdmProducts() {
       return { ...pre, imagesUrl: newImages }; // 更新回去
     });
   };
+
   // 新增多圖的圖片
   const handleAddImage = () => {
     setTempProduct((pre) => {
@@ -154,6 +133,7 @@ function AdmProducts() {
       return { ...pre, imagesUrl: newImages };
     });
   };
+
   // 刪除多圖的圖片
   const handleRemoveImage = () => {
     setTempProduct((prev) => {
@@ -177,21 +157,38 @@ function AdmProducts() {
     }));
   };
 
+  // 處理巢狀欄位
+  const handleDifficultyChange = (e) => {
+    const { name, value, type } = e.target;
+    setTempProduct((prev) => ({
+      ...prev,
+      difficulty: {
+        ...prev.difficulty,
+        [name]: type === 'number' ? Number(value) : value,
+      },
+    }));
+  };
+
+  const handleEnvironmentChange = (e) => {
+    const { name, value } = e.target;
+    setTempProduct((prev) => ({
+      ...prev,
+      environment: {
+        ...prev.environment,
+        [name]: value,
+      },
+    }));
+  };
+
   // submit 新增或修改
-  const handleUpdateProduct = async () => {
+  const handleEditProduct = async () => {
     setIsLoading(true);
     try {
       if (modalMode === 'create') {
         await addProduct(tempProduct);
       } else {
-        await updateProduct(tempProduct.id, tempProduct);
+        await editProduct(tempProduct.id, tempProduct);
       }
-      // dispatch(
-      //   createAsyncMessage({
-      //     success: true,
-      //     message: `${modalMode === 'create' ? '新增' : '更新'}成功`,
-      //   }),
-      // );
       showSuccess(`${modalMode === 'create' ? '新增' : '更新'}成功`);
       setIsProductModalOpen(false);
       getData();
@@ -213,21 +210,19 @@ function AdmProducts() {
       <div className='mb-3 d-flex gap-2'>
         <button
           className='btn btn-tert-500'
-          onClick={getData}
+          onClick={() => getData()}
           disabled={loadingData}
         >
           {loadingData ? (
-            <>
-              <div className='d-flex justify-content-center align-items-center'>
-                <LoadingSpinner
-                  spinner='RotatingLines'
-                  color='#272725'
-                  width='16px'
-                  height='16px'
-                />
-                <span className='ms-2'>處理中</span>
-              </div>
-            </>
+            <div className='d-flex justify-content-center align-items-center'>
+              <LoadingSpinner
+                spinner='RotatingLines'
+                color='#272725'
+                width='16px'
+                height='16px'
+              />
+              <span className='ms-2'>處理中</span>
+            </div>
           ) : (
             <>
               <i className='bi bi-arrow-clockwise'></i>
@@ -289,7 +284,7 @@ function AdmProducts() {
                       </button>
                       <button
                         className='btn btn-sm btn-outline-error'
-                        onClick={() => handleDelete(item.id)}
+                        onClick={() => setConfirmId(item.id)}
                       >
                         刪除
                       </button>
@@ -313,16 +308,23 @@ function AdmProducts() {
             modalMode={modalMode}
             tempProduct={tempProduct}
             onInputChange={handleInputChange}
-            onSubmit={handleUpdateProduct}
+            onSubmit={handleEditProduct}
             onImageChange={handleImageChange}
             onAddImage={handleAddImage}
             onRemoveImage={handleRemoveImage}
             onUploadImage={handleUpload}
+            onDifficultyChange={handleDifficultyChange}
+            onEnvironmentChange={handleEnvironmentChange}
+          />
+          <ConfirmModal
+            isOpen={confirmId !== null}
+            message='確定要刪除此商品嗎？'
+            onConfirm={handleDelete}
+            onCancel={() => setConfirmId(null)}
           />
         </div>
       )}
     </div>
   );
 }
-
 export default AdmProducts;

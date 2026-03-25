@@ -32,7 +32,7 @@ function LoginPage() {
       document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
       // axios.defaults.headers.common["Authorization"] = token;
       showSuccess('登入成功');
-      navigate('/admin');
+      navigate('/admin/products');
     } catch (error) {
       showError(`登入失敗: ${error.response?.data.message}`);
       setIsAuth(false);

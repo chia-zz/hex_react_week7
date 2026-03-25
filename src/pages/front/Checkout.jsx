@@ -101,7 +101,7 @@ function Checkout() {
               <div className='col-12 col-md-8 d-flex align-items-center'>
                 <button
                   type='button'
-                  className='btn btn-primary-400 text-primary-100'
+                  className='btn btn-outline-primary-800 fw-bold border-0'
                   onClick={handleCartPage}
                 >
                   <i className='bi bi-arrow-bar-left me-1'></i>回到購物車
@@ -226,57 +226,51 @@ function Checkout() {
                     </div>
                   </div>
 
-                  {/* <div className='text-end'>
-                    <button type='submit' className='btn btn-danger'>
-                      <i className='bi bi-bag-check-fill me-1'></i>送出訂單
-                    </button>
-                  </div> */}
-
                   {/* 確認結帳金額區 */}
                   <div className='col-md-4 text-sec-600'>
-                    <h3 className='text-center'>
-                      <i className='bi bi-bag-check me-1'></i>Your Bag
-                    </h3>
+                    <h3 className='text-center'>Your Bag</h3>
                     <hr />
-                    <table className='table table-striped table-hover align-middle'>
-                      <thead className='fs-5'>
-                        {/* <tr>
-                    <th scope='col'>Image</th>
-                    <th scope='col'>Products</th>
-                    <th scope='col'>Quantity</th>
-                    <th scope='col'>Price</th>
-                  </tr> */}
-                      </thead>
-                      <tbody>
-                        {cartItem.map((item) => (
-                          <tr key={item.id}>
-                            <td>
-                              <img
-                                src={item.product.imageUrl}
-                                alt={item.product.title}
-                                style={{
-                                  width: '80px',
-                                  height: '80px',
-                                  objectFit: 'cover',
-                                }}
-                              />
-                            </td>
-                            <td>{item.product.title}</td>
-                            <td>
-                              <div className='d-flex justify-content-evenly align-items-center'>
-                                <span>
-                                  <strong className='fs-3 text-success mx-2'>
-                                    {item.qty}
-                                  </strong>
-                                </span>
-                              </div>
-                            </td>
-                            <td>NT$ {item.total.toLocaleString()}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <h3>Order Summary</h3>
+                    <ul
+                      className='list-unstyled mb-0 px-6'
+                      style={{ maxHeight: '300px', overflowY: 'auto' }}
+                    >
+                      {cartItem.map((item) => (
+                        <li
+                          key={item.id}
+                          className='d-flex gap-2 mb-3 pb-3 border-bottom'
+                        >
+                          <img
+                            src={item.product.imageUrl}
+                            alt={item.product.title}
+                            className='rounded-1 flex-shrink-0'
+                            style={{
+                              width: '60px',
+                              height: '60px',
+                              objectFit: 'cover',
+                            }}
+                          />
+                          <div className='flex-grow-1 overflow-hidden'>
+                            <div className='text-start fw-semibold text-sec-900 text-truncate'>
+                              {item.product.title}
+                            </div>
+                            <div className='d-flex justify-content-between align-items-center mt-1'>
+                              <span className='text-sec-900'>
+                                NT$
+                                {item.product.price.toLocaleString()} x{' '}
+                                {item.qty}
+                              </span>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <h3 className='text-center mt-5'>Coupon</h3>
+                    <hr />
+                    <input type='text' />
+                    <button type='submit'></button>
+
+                    <h3 className='text-center mt-5'>Order Summary</h3>
                     <hr />
                     <div className='d-flex flex-column gap-2'>
                       <h5 className='d-flex px-3'>

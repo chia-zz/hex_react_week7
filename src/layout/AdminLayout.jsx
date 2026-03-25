@@ -43,7 +43,7 @@ function AdminLayout() {
             <AdmSidebar />
           </div>
 
-          <main>
+          <main className='mt-9 mt-md-0 '>
             <Outlet />
           </main>
         </div>

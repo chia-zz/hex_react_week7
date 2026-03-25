@@ -14,7 +14,7 @@ import NotFound404 from '../pages/front/NotFound404.jsx';
 import AdmLogin from '../pages/admin/AdmLogin.jsx';
 import AdmOrder from '../pages/admin/AdmOrder.jsx';
 import AdmProducts from '../pages/admin/AdmProducts.jsx';
-// import AdmImages from '../pages/admin/AdmImages.jsx';
+import AdmCoupon from '../pages/admin/AdmCoupon.jsx';
 import AdmNotFound404 from '../pages/admin/AdmNotFound404.jsx';
 import ProtectedRouter from '../components/admin/ProtectedRouter.jsx';
 
@@ -53,7 +53,7 @@ export const router = createHashRouter([
           { index: true, element: <AdmProducts /> },
           { path: 'orders', element: <AdmOrder /> },
           { path: 'products', element: <AdmProducts /> },
-          // { path: 'images', element: <AdmImages /> },
+          { path: 'coupons', element: <AdmCoupon /> },
           { path: '*', element: <AdmNotFound404 /> },
         ],
       },

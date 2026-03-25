@@ -22,4 +22,7 @@
   width: calc(100vw - 20vw);
   right: 0;
   top: 80px;
+  @media (max-width: 768px) {
+    width: 100vw;
+  }
 }

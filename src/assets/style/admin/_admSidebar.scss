@@ -7,13 +7,29 @@
   color: $primary-800;
   background-color: $sec-100;
   border-right: 1px solid $sec-400;
+  @media (max-width: 768px) {
+    width: 100vw;
+    max-width: 100%;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    ul {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+  }
 }
 
 .sidebar_link {
-  font-size: 28px;
-  padding: 8px 16px;
+  font-size: 24px;
+  padding: 6px 12px;
   border-radius: 10px;
   text-decoration: none;
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 }
 .sidebar_link-active {
   color: $sec-100;

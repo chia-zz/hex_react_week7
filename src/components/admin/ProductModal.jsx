@@ -9,6 +9,8 @@ function ProductModal({
   onRemoveImage,
   onSubmit,
   onUploadImage,
+  onDifficultyChange,
+  onEnvironmentChange,
 }) {
   if (!isOpen) return null; // 如果沒開啟，直接不渲染
 
@@ -87,32 +89,29 @@ function ProductModal({
                   <div className='col-12 mb-4'>
                     <div className=' row'>
                       <div className='col-md-3  mb-4'>
-                        <label
-                          htmlFor='difficulty.stars'
-                          className='form-label'
-                        >
+                        <label htmlFor='stars' className='form-label'>
                           照顧難度星等 (1-5)
                         </label>
                         <input
                           type='number'
                           className='form-control'
-                          name='difficulty.stars'
+                          name='stars'
                           value={tempProduct.difficulty.stars}
-                          onChange={onInputChange}
+                          onChange={onDifficultyChange}
                           min='1'
                           max='5'
                         />
                       </div>
                       <div className='col-md-9  mb-4'>
-                        <label htmlFor='difficulty.note' className='form-label'>
+                        <label htmlFor='note' className='form-label'>
                           難度備註
                         </label>
                         <input
                           type='text'
                           className='form-control'
-                          name='difficulty.note'
+                          name='note'
                           value={tempProduct.difficulty.note}
-                          onChange={onInputChange}
+                          onChange={onDifficultyChange}
                           placeholder='例如：適合新手、需固定擺放位置'
                         />
                       </div>
@@ -123,49 +122,40 @@ function ProductModal({
                   <div className='col-12 mb-4'>
                     <div className=' row'>
                       <div className='col-md-6 mb-3'>
-                        <label
-                          htmlFor='environment.light'
-                          className='form-label'
-                        >
+                        <label htmlFor='light' className='form-label'>
                           光照需求
                         </label>
                         <input
                           type='text'
                           className='form-control'
-                          name='environment.light'
+                          name='light'
                           value={tempProduct.environment.light}
-                          onChange={onInputChange}
+                          onChange={onEnvironmentChange}
                           placeholder='例如：充足散射光'
                         />
                       </div>
                       <div className='col-md-6 mb-3'>
-                        <label
-                          htmlFor='environment.water'
-                          className='form-label'
-                        >
+                        <label htmlFor='water' className='form-label'>
                           水分需求
                         </label>
                         <input
                           type='text'
                           className='form-control'
-                          name='environment.water'
+                          name='water'
                           value={tempProduct.environment.water}
-                          onChange={onInputChange}
+                          onChange={onEnvironmentChange}
                           placeholder='例如：土表乾了再澆透'
                         />
                       </div>
                       <div className='col-md-6  mb-4'>
-                        <label
-                          htmlFor='environment.humidity_level'
-                          className='form-label'
-                        >
+                        <label htmlFor='humidity_level' className='form-label'>
                           濕度等級
                         </label>
                         <select
                           className='form-select'
-                          name='environment.humidity_level'
+                          name='humidity_level'
                           value={tempProduct.environment.humidity_level}
-                          onChange={onInputChange}
+                          onChange={onEnvironmentChange}
                         >
                           <option value='極低'>極低</option>
                           <option value='低'>低</option>
@@ -175,18 +165,15 @@ function ProductModal({
                         </select>
                       </div>
                       <div className='col-md-6  mb-4'>
-                        <label
-                          htmlFor='environment.humidity_range'
-                          className='form-label'
-                        >
+                        <label htmlFor='humidity_range' className='form-label'>
                           濕度範圍 (%)
                         </label>
                         <input
                           type='text'
                           className='form-control'
-                          name='environment.humidity_range'
+                          name='humidity_range'
                           value={tempProduct.environment.humidity_range}
-                          onChange={onInputChange}
+                          onChange={onEnvironmentChange}
                           placeholder='例如：50% - 70%'
                         />
                       </div>
