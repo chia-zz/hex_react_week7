@@ -148,7 +148,9 @@ function Header() {
                     ))}
                   </nav>
 
-                  <div className='mobile-container__footer'></div>
+                  <div className='mobile-container__footer'>
+                    <CartDropdown />
+                  </div>
                 </div>
               </div>
             </div>

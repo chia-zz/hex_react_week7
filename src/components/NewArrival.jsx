@@ -66,7 +66,7 @@ function NewArrival() {
                 >
                   <div className='card h-100 rounded-4 overflow-hidden'>
                     <div className='position-relative overflow-hidden'>
-                      <span className='badge rounded-pill bg-primary-800 text-primary-50 position-absolute top-0 start-0 mt-2 ms-2 z-3'>
+                      <span className='badge rounded-pill bg-tert-600 text-primary-50 position-absolute top-0 start-0 mt-3 ms-3 z-3'>
                         最新上架
                       </span>
 
@@ -101,7 +101,7 @@ function NewArrival() {
                         style={{ width: '100%', height: '180px' }}
                       />
                     </div>
-                    <div className='card-body py-2 px-3'>
+                    <div className='card-body text-start py-4 px-5'>
                       <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
                         <p
                           className='fs-6 fs-md-5 fw-bold mb-0'
@@ -113,9 +113,15 @@ function NewArrival() {
                           ${product.price}
                         </span>
                       </div>
-                      <span className='badge rounded-pill bg-accent text-primary-50 z-3'>
-                        {product.category}
-                      </span>
+                      <div className='d-flex justify-content-between align-items-center text-gray-600 mb-1'>
+                        <span className='badge rounded-2 bg-accent text-primary-50 z-3'>
+                          {product.category}
+                        </span>
+                        <p className=' fw-bold mb-0'>
+                          照顧難度:
+                          {product.difficulty.stars}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </Link>

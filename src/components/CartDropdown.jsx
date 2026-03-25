@@ -130,9 +130,10 @@ const CartDropdown = () => {
       {/* 購物車 */}
       <button
         type='button'
-        className='home-btn bg-primary-200 border-0 position-relative text-decoration-none'
+        className='home-btn bg-primary-300 border-0 position-relative text-decoration-none'
         onClick={() => dispatch(toggleCart())}
         aria-label='查看購物車'
+        style={{ width: '48px' }}
       >
         <i className='bi bi-cart fs-5' aria-hidden='true'></i>
         {/* badge */}

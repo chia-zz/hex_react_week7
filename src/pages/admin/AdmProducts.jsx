@@ -32,6 +32,16 @@ function AdmProducts() {
     imageUrl: '',
     imagesUrl: [],
     star: 0,
+    difficulty: {
+      stars: 0,
+      note: '',
+    },
+    environment: {
+      light: '',
+      water: '',
+      humidity_level: '',
+      humidity_range: '',
+    },
   };
   const [products, setProducts] = useState([]);
   // loading spinner 設定

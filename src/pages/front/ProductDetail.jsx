@@ -120,7 +120,7 @@ function ProductDetail() {
                     </span>
                   </div>
                   <h1 className='card-title fw-bold'>{product.title}</h1>
-                  <div className='fs-6'>{product.description}</div>
+                  <div className='fs-6'>{product.content}</div>
                   <p className='mb-0'>
                     <span className='text-error fw-bold fs-3 me-1'>
                       <span className='me-1'>NT$</span>
@@ -134,8 +134,6 @@ function ProductDetail() {
                       </del>
                     </small>
                   </p>
-                  <hr />
-                  <div className='fs-5'>{product.content}</div>
                   {/* 數量 + 加入購物車 */}
                   <div className='d-flex align-items-center gap-2 mt-3'>
                     <div className='d-flex justify-content-between align-items-center gap-2'>
@@ -177,6 +175,51 @@ function ProductDetail() {
                           '加入購物車'
                         )}
                       </button>
+                    </div>
+                  </div>
+                  <hr />
+                  <div className='container'>
+                    <div className='row'>
+                      <h3 className='mb-4'>了解更多</h3>
+                      <p>{product.description}</p>
+                      <h4 className='mt-5 mb-4'>照顧技巧</h4>
+                      <div className='col-6'>
+                        <h5>
+                          <i className='bi bi-star me-2'></i>照顧難度
+                        </h5>
+                        <p>{product.difficulty.stars}</p>
+                      </div>
+                      <div className='col-6'>
+                        <h5>
+                          <i className='bi bi-magic me-2'></i>照顧技巧
+                        </h5>
+                        <p>{product.difficulty.note}</p>
+                      </div>
+                      <div className='col-6'>
+                        <h5>
+                          <i className='bi bi-sun me-2'></i>光照需求
+                        </h5>
+                        <p>{product.environment.light}</p>
+                      </div>
+                      <div className='col-6'>
+                        <h5>
+                          <i className='bi bi-droplet-half me-2'></i>水分需求
+                        </h5>
+                        <p>{product.environment.water}</p>
+                      </div>
+                      <div className='col-6'>
+                        <h5>
+                          <i className='bi bi-cloud-haze2 me-2'></i>濕度等級
+                        </h5>
+                        <p>{product.environment.humidity_level}</p>
+                      </div>
+                      <div className='col-6'>
+                        {' '}
+                        <h5>
+                          <i className='bi bi-house-heart me-2'></i>濕度範圍
+                        </h5>
+                        <p>{product.environment.humidity_range}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
