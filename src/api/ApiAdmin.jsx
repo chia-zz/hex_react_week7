@@ -44,7 +44,7 @@ export const getAdminProducts = (page = 1) => {
 };
 
 // 新增單一商品
-export const addProduct = (data) => {
+export const addAdminProduct = (data) => {
   return axios.post(
     `${apiUrl}/api/${apiPath}/admin/product`,
     { data },
@@ -53,7 +53,7 @@ export const addProduct = (data) => {
 };
 
 // 編輯單一商品
-export const editProduct = (id, data) => {
+export const editAdminProduct = (id, data) => {
   return axios.put(
     `${apiUrl}/api/${apiPath}/admin/product/${id}`,
     { data },
@@ -62,7 +62,7 @@ export const editProduct = (id, data) => {
 };
 
 // 刪除單一商品
-export const deleteProduct = (id) => {
+export const deleteAdminProduct = (id) => {
   return axios.delete(
     `${apiUrl}/api/${apiPath}/admin/product/${id}`,
     getHeaders(),
@@ -70,7 +70,7 @@ export const deleteProduct = (id) => {
 };
 
 // 上傳圖片
-export const uploadImage = (formData) => {
+export const uploadAdminImage = (formData) => {
   return axios.post(
     `${apiUrl}/api/${apiPath}/admin/upload`,
     formData,
@@ -105,7 +105,7 @@ export const deleteAdminAllOrders = () => {
 };
 
 // 新增優惠券
-export const addNewCoupon = (couponData) => {
+export const addAdminNewCoupon = (couponData) => {
   return axios.post(
     `${apiUrl}/api/${apiPath}/admin/coupon`,
     { data: couponData },
@@ -114,14 +114,14 @@ export const addNewCoupon = (couponData) => {
 };
 
 // 取得全部優惠券
-export const getAllCoupon = (page = 1) => {
+export const getAdminAllCoupon = (page = 1) => {
   return axios.get(`${apiUrl}/api/${apiPath}/admin/coupons`, {
     params: { page },
   });
 };
 
 // 編輯單一優惠券
-export const editCoupon = (id, content) => {
+export const editAdminCoupon = (id, content) => {
   return axios.put(
     `${apiUrl}/api/${apiPath}/admin/coupon/${id}`,
     { data: content },
@@ -130,6 +130,6 @@ export const editCoupon = (id, content) => {
 };
 
 // 刪除單一優惠券
-export const deleteCoupon = (id) => {
+export const deleteAdminCoupon = (id) => {
   return axios.delete(`${apiUrl}/api/${apiPath}/admin/coupon/${id}`);
 };

@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import useMessage from '../hooks/useMessage';
+import useMessage from '../../hooks/useMessage';
 // API
-import { getCart, deleteCart } from '../api/ApiClient';
+import { getCart, deleteCart } from '../../api/ApiClient';
 // component
-import LoadingSpinner from './LoadingSpinner';
-import ConfirmModal from './ConfirmModal';
+import LoadingSpinner from '../common/LoadingSpinner';
+import ConfirmModal from '../common/ConfirmModal';
 // cartSilce 區
 import {
   openCart,
@@ -22,7 +22,7 @@ import {
   setLoading,
   setError,
   renderRefresh,
-} from '../store/slices/cartSlice';
+} from '../../store/slices/cartSlice';
 
 const CartDropdown = () => {
   const [confirmId, setConfirmId] = useState(null);
@@ -107,7 +107,7 @@ const CartDropdown = () => {
   return (
     <>
       <div
-        className='position-relative '
+        className='position-relative text-end'
         ref={dropdownRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
@@ -130,11 +130,11 @@ const CartDropdown = () => {
         {/* dropdown 區 */}
         {isOpen && (
           <div
-            className='header__cartDropdown position-absolute end-0 mt-2 rounded-3 shadow bg-success-light'
+            className='header__cartDropdown d-none d-lg-block position-absolute end-0 mt-2 rounded-3 shadow bg-success-light'
             style={{ width: '300px', zIndex: 1050 }}
           >
             <div className='py-3 px-4'>
-              <h6 className='fs-5 fw-bold mb-3'>購物車</h6>
+              <h6 className='fs-5 fw-bold mb-3 text-center'>購物車</h6>
               {isLoading ? (
                 <div className='d-flex justify-content-center py-4 mx-auto'>
                   <LoadingSpinner spinner='RotatingLines' />

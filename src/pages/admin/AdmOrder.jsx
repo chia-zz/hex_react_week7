@@ -10,8 +10,8 @@ import {
   // deleteAdminAllOrders,
 } from '../../api/ApiAdmin';
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Pagination from '../../components/Pagination';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Pagination from '../../components/common/Pagination';
 import OrderDetail from '../../components/admin/OrderDetail';
 
 function AdmOrder() {
@@ -33,12 +33,10 @@ function AdmOrder() {
     setLoadingData(true);
     try {
       const res = await getAdminOrders(page);
-      console.log(res.data.orders);
       setOrder(res.data.orders);
       setPagination(res.data.pagination);
     } catch (error) {
       showError('取得資料失敗', error);
-      // navigate('/');
     } finally {
       setLoadingData(null);
     }
@@ -122,7 +120,7 @@ function AdmOrder() {
                 <thead>
                   <tr>
                     <th>訂單日期</th>
-                    <th>訂單編號</th>
+                    <th>訂單編號（後 5 碼）</th>
                     <th>總金額</th>
                     <th>是否付款</th>
                     <th>訂購人姓名</th>

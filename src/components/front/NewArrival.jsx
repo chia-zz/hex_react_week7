@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
-import useMessage from '../hooks/useMessage';
+import useMessage from '../../hooks/useMessage';
 import { useDispatch } from 'react-redux';
-import { getProducts, addCart } from '../api/ApiClient';
-import { renderRefresh } from '../store/slices/cartSlice';
+import { getProducts, addCart } from '../../api/ApiClient';
+import { renderRefresh } from '../../store/slices/cartSlice';
 import { Link } from 'react-router-dom';
-import LoadingSpinner from './LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 
 function NewArrival() {
   // const navigate = useNavigate();
@@ -117,7 +117,13 @@ function NewArrival() {
                         </span>
                         <p className=' fw-bold mb-0'>
                           照顧難度:
-                          {product.difficulty.stars}
+                          {Array.from({ length: product.difficulty.stars }).map(
+                            (item, index) => (
+                              <span key={index}>
+                                <i className='bi bi-droplet-fill text-accent'></i>
+                              </span>
+                            ),
+                          )}
                         </p>
                       </div>
                     </div>

@@ -9,6 +9,7 @@ import Product from '../pages/front/ProductList.jsx';
 import ProductDetail from '../pages/front/ProductDetail.jsx';
 import Cart from '../pages/front/Cart.jsx';
 import Checkout from '../pages/front/Checkout.jsx';
+import Payment from '../pages/front/Payment.jsx';
 import NotFound404 from '../pages/front/NotFound404.jsx';
 // 後台
 import AdmLogin from '../pages/admin/AdmLogin.jsx';
@@ -33,6 +34,7 @@ export const router = createHashRouter([
           { path: 'product/:id', element: <ProductDetail /> },
           { path: 'cart', element: <Cart /> },
           { path: 'checkout', element: <Checkout /> },
+          { path: 'payment/:orderId', element: <Payment /> },
           { path: '*', element: <NotFound404 /> },
         ],
       },

@@ -1,6 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import CartDropdown from '../components/CartDropdown';
+import CartDropdown from '../components/front/CartDropdown';
 
 const NavbarData = {
   brand: {
@@ -11,7 +11,7 @@ const NavbarData = {
     { icon: 'bi-house-door', title: '首頁', url: '/' },
     { icon: 'bi-box-seam', title: '產品', url: '/product' },
     // { icon: 'bi-cart3', title: '購物車', url: '/cart' },
-    { icon: 'bi-cash-stack', title: '結帳', url: '/checkout' },
+    // { icon: 'bi-cash-stack', title: '結帳', url: '/checkout' },
     { icon: 'bi-person-gear', title: '後台', url: '/admin/login' },
   ],
 };
@@ -73,9 +73,9 @@ function Header() {
                   <svg
                     className='home-outline'
                     overflow='visible'
-                    width='400'
+                    width='300'
                     height='48'
-                    viewBox='0 0 400 48'
+                    viewBox='0 0 300 48'
                     xmlns='http://www.w3.org/2000/svg'
                   >
                     <rect
@@ -83,7 +83,7 @@ function Header() {
                       pathLength='100'
                       x='0'
                       y='0'
-                      width='400'
+                      width='300'
                       height='48'
                       fill='transparent'
                       strokeWidth='5'
@@ -91,7 +91,9 @@ function Header() {
                   </svg>
                 </div>
               </div>
-              <CartDropdown />
+              <div style={{ width: '160px' }}>
+                <CartDropdown />
+              </div>
             </div>
 
             {/* mobile */}
@@ -110,10 +112,20 @@ function Header() {
                     {NavbarData.brand.title}
                   </NavLink>
 
-                  <div className='d-flex align-items-center gap-2'>
+                  <div className='d-flex align-items-center gap-1'>
+                    <Link
+                      className='home-btn bg-primary-300 border-0'
+                      style={{ width: '32px', borderRadius: '50%' }}
+                      to={'/cart'}
+                      onClick={closeMenu}
+                      aria-label='前往購物車'
+                    >
+                      <i className='bi bi-cart' aria-hidden='true'></i>
+                    </Link>
                     <button
                       type='button'
-                      className='btn btn-outline-gray-400 rounded-pill border-none'
+                      className='home-btn bg-primary-300 border-0'
+                      style={{ width: '32px', borderRadius: '50%' }}
                       onClick={toggleMenu}
                     >
                       <i
@@ -148,9 +160,7 @@ function Header() {
                     ))}
                   </nav>
 
-                  <div className='mobile-container__footer'>
-                    <CartDropdown />
-                  </div>
+                  <div className='mobile-container__footer'></div>
                 </div>
               </div>
             </div>

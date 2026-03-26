@@ -17,13 +17,14 @@ import {
 } from '../../api/ApiClient';
 
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
-import ConfirmModal from '../../components/ConfirmModal';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import ConfirmModal from '../../components/common/ConfirmModal';
 
 function Cart() {
   const [cartItem, setCartItem] = useState([]);
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingItemId, setLoadingItemId] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
   const [clearAllCart, setClearAllCart] = useState(null);
   const [shippingFee, setShippingFee] = useState(0);
@@ -67,6 +68,7 @@ function Cart() {
       setDeleteId(item.id);
       return;
     }
+    setLoadingItemId(item.id);
     try {
       await editCart(item.id, item.product_id, qty);
       showSuccess('數量已更新');
@@ -75,6 +77,8 @@ function Cart() {
     } catch (error) {
       console.error('更新失敗', error);
       showError('更新失敗');
+    } finally {
+      setLoadingItemId(null);
     }
   };
 
@@ -118,7 +122,6 @@ function Cart() {
 
   useEffect(() => {
     const init = async () => {
-      setIsLoading(true);
       await getAllCart();
       setIsLoading(false);
     };
@@ -194,20 +197,26 @@ function Cart() {
                               className='btn btn-outline-primary border-0'
                               type='button'
                               onClick={() => updateCartItem(item, item.qty - 1)}
-                              disabled={isLoading}
+                              disabled={loadingItemId === item.id}
                             >
                               <i className='bi bi-dash-circle'></i>
                             </button>
-                            <span>
-                              <strong className='fs-3 text-success mx-2'>
+                            {loadingItemId === item.id ? (
+                              <LoadingSpinner
+                                spinner='RotatingLines'
+                                width='24px'
+                                height='24px'
+                              />
+                            ) : (
+                              <p className='fw-bold fs-3 text-success mx-2 mb-0'>
                                 {item.qty}
-                              </strong>
-                            </span>
+                              </p>
+                            )}
                             <button
                               className='btn btn-outline-primary border-0'
                               type='button'
                               onClick={() => updateCartItem(item, item.qty + 1)}
-                              disabled={isLoading}
+                              disabled={loadingItemId === item.id}
                             >
                               <i className='bi bi-plus-circle'></i>
                             </button>
@@ -267,7 +276,7 @@ function Cart() {
                   className=' btn btn-primary border mt-3 mx-2 w-100 d-inline-block text-primary-50 fw-semibold text-decoration-none'
                   to={'/checkout'}
                 >
-                  <span className=' fs-5'>前往結帳</span>
+                  <span className=' fs-5'>下一步</span>
                 </Link>
               </div>
             </div>

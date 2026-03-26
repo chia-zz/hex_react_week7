@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import AdmSidebar from './AdmSidebar';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import useMessage from '../hooks/useMessage';
 
 // API

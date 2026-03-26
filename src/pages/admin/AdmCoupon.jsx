@@ -4,15 +4,15 @@ import useMessage from '../../hooks/useMessage';
 
 // API
 import {
-  addNewCoupon,
-  getAllCoupon,
-  editCoupon,
-  deleteCoupon,
+  addAdminNewCoupon,
+  getAdminAllCoupon,
+  editAdminCoupon,
+  deleteAdminCoupon,
 } from '../../api/ApiAdmin';
 
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Pagination from '../../components/Pagination';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Pagination from '../../components/common/Pagination';
 import CouponModal from '../../components/admin/CouponModal';
 import CouponDetail from '../../components/admin/CouponDetail';
 
@@ -60,14 +60,11 @@ function AdmCoupon() {
   const getCouponData = async (page = 1) => {
     setLoadingData(true);
     try {
-      const res = await getAllCoupon(page);
-      console.log(res.data);
-      console.log('優惠券資料：', res.data.coupons);
+      const res = await getAdminAllCoupon(page);
       setCoupon(res.data.coupons);
       setPagination(res.data.pagination);
     } catch (error) {
       showError('取得資料失敗', error.messages);
-      console.log(error.messages);
     } finally {
       setLoadingData(false);
     }
@@ -91,7 +88,7 @@ function AdmCoupon() {
     try {
       const isConfirm = window.confirm('確定要移除該商品嗎？');
       if (isConfirm) {
-        const res = await deleteCoupon(id);
+        const res = await deleteAdminCoupon(id);
         showSuccess('刪除成功', res.data);
         getCouponData();
       }
@@ -119,9 +116,9 @@ function AdmCoupon() {
         due_date: Math.floor(new Date(tempCoupon.due_date).getTime() / 1000), // 👈
       };
       if (modalMode === 'create') {
-        await addNewCoupon(reformData);
+        await addAdminNewCoupon(reformData);
       } else {
-        await editCoupon(tempCoupon.id, reformData);
+        await editAdminCoupon(tempCoupon.id, reformData);
       }
       showSuccess(`${modalMode === 'create' ? '新增' : '更新'}成功`);
       setIsCouponModalOpen(false);

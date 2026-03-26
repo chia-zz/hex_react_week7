@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import useMessage from '../../hooks/useMessage';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,9 +9,9 @@ import {
   selectNeedsRefresh,
 } from '../../store/slices/cartSlice';
 // API
-import { getCart, submitOrder, clientCoupon } from '../../api/ApiClient';
+import { getCart, submitOrder, postCoupon } from '../../api/ApiClient';
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 
 function Checkout() {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ function Checkout() {
       return;
     }
     try {
-      const res = await clientCoupon({
+      const res = await postCoupon({
         code: couponCode.toUpperCase(),
       });
       const discountPrice = Math.round(total - res.data.data.final_total);
@@ -64,8 +64,7 @@ function Checkout() {
       showError('優惠碼無效或已過期', error);
     }
   };
-  // 處理運費
-  // 只要 finalTotal 改變，就會觸發重新計算運費
+  // 處理運費， finalTotal 改變就重新算運費
   useEffect(() => {
     // 購物車為空時運費為0
     if (finalTotal === 0) {
@@ -85,7 +84,17 @@ function Checkout() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm({ mode: 'onChange' });
+  } = useForm(
+    {
+      defaultValues: {
+        name: '',
+        email: '',
+        tel: '',
+        payment_method: '',
+      },
+    },
+    { mode: 'onChange' },
+  );
 
   // 回到購物車頁
   const handleCartPage = () => {
@@ -102,23 +111,27 @@ function Checkout() {
 
   // 表單 submit
   const onSubmit = async (formData) => {
+    setIsLoading(true);
     try {
       const data = {
         user: formData,
         message: formData.message,
       };
-      await submitOrder(data);
+      const res = await submitOrder(data);
+      const orderId = res.data.orderId;
       showSuccess('訂單送出成功！');
       reset();
       getAllCart();
       setCouponCode('');
       setFinalTotal(0);
       dispatch(renderRefresh());
+      navigate(`/payment/${orderId}`);
     } catch (error) {
       showError('送出訂單發生錯誤：', error);
     } finally {
       setCouponCode('');
       setFinalTotal(0);
+      setIsLoading(false);
     }
   };
 
@@ -148,9 +161,6 @@ function Checkout() {
           <div className='row'>
             {/* 結帳表單 */}
             <div className=' my-4'>
-              <h2 className='fs-1 text-start text-sec-600 mb-2'>
-                <i className='bi bi-credit-card-2-front-fill me-2'></i>CHECKOUT
-              </h2>
               {/* 回購物車按鈕 */}
               <div className='col-12 col-md-8 d-flex align-items-center'>
                 <button
@@ -162,127 +172,170 @@ function Checkout() {
                 </button>
               </div>
               {/* 結帳頁面 */}
-              <div className=' my-3 mx-3'>
+              <div className='m-3'>
                 <form
                   className='row text-start '
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className='col-12 col-md-8'>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='email'
-                        className='form-label fs-5 text-sec-600 ps-2'
-                      >
-                        Email
-                      </label>
-                      <input
-                        id='email'
-                        name='email'
-                        type='email'
-                        className='form-control'
-                        placeholder='請輸入 Email'
-                        {...register('email', {
-                          required: '請輸入 Email',
-                          pattern: {
-                            value: /^\S+@\S+$/i,
-                            setValueAs: (v) => v.trim(), // 去掉空白格
-                            message: '請輸入正確的 Email 格式',
-                          },
-                        })}
-                      />
-                      {errors.email && (
-                        <p className='text-error mt-1'>
-                          {errors.email.message}
-                        </p>
-                      )}
-                    </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='name'
-                        className='form-label fs-5 text-sec-600 ps-2'
-                      >
-                        訂購人姓名
-                      </label>
-                      <input
-                        id='name'
-                        name='name'
-                        type='text'
-                        className='form-control'
-                        placeholder='請輸入訂購人姓名'
-                        {...register('name', {
-                          required: '請輸入訂購人姓名',
-                          minLength: { value: 2, message: '名字至少 2 個字' },
-                        })}
-                      />
-                      {errors.name && (
-                        <p className='text-error mt-1'>{errors.name.message}</p>
-                      )}
-                    </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='tel'
-                        className='form-label fs-5 text-sec-600 ps-2'
-                      >
-                        聯絡電話
-                      </label>
-                      <input
-                        id='tel'
-                        name='tel'
-                        type='tel'
-                        className='form-control'
-                        placeholder='請輸入手機號碼'
-                        {...register('tel', {
-                          required: '請輸入手機號碼',
-                          minLength: { value: 10, message: '手機至少 10 碼' },
-                          pattern: {
-                            value: /^09\d{8}$/,
-                            setValueAs: (v) => v.trim(),
-                            message: '請輸入正確的手機號碼（09xxxxxxxx）',
-                          },
-                        })}
-                      />
-                      {errors.tel && (
-                        <p className='text-error mt-1'>{errors.tel.message}</p>
-                      )}
-                    </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='address'
-                        className='form-label fs-5 text-sec-600 ps-2'
-                      >
-                        收件地址
-                      </label>
-                      <input
-                        id='address'
-                        name='address'
-                        type='text'
-                        className='form-control'
-                        placeholder='請輸入收件地址'
-                        {...register('address', {
-                          required: '請輸入收件地址',
-                        })}
-                      />
-                    </div>
-                    <div className='mb-3'>
-                      <label
-                        htmlFor='message'
-                        className='form-label fs-5 text-sec-600 ps-2'
-                      >
-                        留言
-                      </label>
-                      <textarea
-                        id='message'
-                        className='form-control'
-                        cols='3'
-                        rows='10'
-                        {...register('message')}
-                      ></textarea>
+                    <div className='card bg-sec-50 p-6'>
+                      <h2 className='fs-2 text-start text-sec-900'>CHECKOUT</h2>
+                      <hr />
+                      {/* Email */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='email'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          Email
+                        </label>
+                        <input
+                          id='email'
+                          name='email'
+                          type='email'
+                          className='form-control'
+                          placeholder='請輸入 Email'
+                          {...register('email', {
+                            required: '請輸入 Email',
+                            pattern: {
+                              value: /^\S+@\S+$/i,
+                              setValueAs: (v) => v.trim(), // 去掉空白格
+                              message: '請輸入正確的 Email 格式',
+                            },
+                          })}
+                        />
+                        {errors.email && (
+                          <p className='text-error mt-1'>
+                            {errors.email.message}
+                          </p>
+                        )}
+                      </div>
+                      {/* 訂購人姓名 */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='name'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          訂購人姓名
+                        </label>
+                        <input
+                          id='name'
+                          name='name'
+                          type='text'
+                          className='form-control'
+                          placeholder='請輸入訂購人姓名'
+                          {...register('name', {
+                            required: '請輸入訂購人姓名',
+                            minLength: { value: 2, message: '名字至少 2 個字' },
+                          })}
+                        />
+                        {errors.name && (
+                          <p className='text-error mt-1'>
+                            {errors.name.message}
+                          </p>
+                        )}
+                      </div>
+                      {/* 連絡電話 */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='tel'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          聯絡電話
+                        </label>
+                        <input
+                          id='tel'
+                          name='tel'
+                          type='tel'
+                          className='form-control'
+                          placeholder='請輸入手機號碼'
+                          {...register('tel', {
+                            required: '請輸入手機號碼',
+                            minLength: { value: 10, message: '手機至少 10 碼' },
+                            pattern: {
+                              value: /^09\d{8}$/,
+                              setValueAs: (v) => v.trim(),
+                              message: '請輸入正確的手機號碼（09xxxxxxxx）',
+                            },
+                          })}
+                        />
+                        {errors.tel && (
+                          <p className='text-error mt-1'>
+                            {errors.tel.message}
+                          </p>
+                        )}
+                      </div>
+                      {/* 收件地址 */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='address'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          收件地址
+                        </label>
+                        <input
+                          id='address'
+                          name='address'
+                          type='text'
+                          className='form-control'
+                          placeholder='請輸入收件地址'
+                          {...register('address', {
+                            required: '請輸入收件地址',
+                          })}
+                        />
+                      </div>
+                      {/* 付款方式 */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='payment_method'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          付款方式
+                        </label>
+                        <select
+                          id='payment_method'
+                          name='payment_method'
+                          className='form-control'
+                          {...register('payment_method', {
+                            required: '請選擇付款方式',
+                            pattern: {
+                              message: '請選擇付款方式',
+                            },
+                          })}
+                        >
+                          <option value=''>請選擇付款方式</option>
+                          <option value='cash'>現金</option>
+                          <option value='credit_card'>信用卡</option>
+                          <option value='e_payment'>電子支付</option>
+                        </select>
+                        {errors.payment_method && (
+                          <p className='text-error mt-1'>
+                            {errors.payment_method.message}
+                          </p>
+                        )}
+                      </div>
+                      {/* 留言 */}
+                      <div className='mb-3'>
+                        <label
+                          htmlFor='message'
+                          className='form-label fs-6 text-sec-600 ps-2'
+                        >
+                          留言
+                        </label>
+                        <textarea
+                          id='message'
+                          className='form-control'
+                          cols='3'
+                          rows='10'
+                          {...register('message')}
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
 
                   {/* 確認結帳金額區 */}
-                  <div className='col-md-4 text-sec-600'>
-                    <h3 className='text-center'>Your Bag</h3>
+                  <div className='col-md-4 text-sec-900'>
+                    <h3 className='text-center mt-3'>Your Bag</h3>
                     <hr />
                     <ul
                       className='list-unstyled mb-0 px-6'
@@ -328,8 +381,15 @@ function Checkout() {
                         placeholder='請輸入優惠碼'
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            applyCoupon();
+                          }
+                        }}
+                        disabled={isLoading}
                       />
+                      {/* <LoadingSpinner spinner='RotatingLines'/> */}
                       <button
                         className='btn btn-accent text-nowrap'
                         type='button'

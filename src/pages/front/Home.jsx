@@ -1,6 +1,6 @@
 // import { useState, useEffect, useRef } from "react";
 import { NavLink } from 'react-router-dom';
-import NewArrival from '../../components/NewArrival';
+import NewArrival from '../../components/front/NewArrival';
 
 // swiper
 import { Swiper, SwiperSlide } from 'swiper/react';

@@ -62,14 +62,30 @@ export const deleteAllCart = () => {
   return axios.delete(`${apiUrl}/api/${apiPath}/carts`);
 };
 
-// 送出結帳
+// 優惠券
+export const postCoupon = (coupon) => {
+  return axios.post(`${apiUrl}/api/${apiPath}/coupon`, { data: coupon });
+};
+
+// 訂單+結帳
+// 送出訂單
 export const submitOrder = (data) => {
   return axios.post(`${apiUrl}/api/${apiPath}/order`, {
     data,
   });
 };
 
-// 優惠券
-export const clientCoupon = (coupon) => {
-  return axios.post(`${apiUrl}/api/${apiPath}/coupon`, { data: coupon });
+// 取得全部訂單
+export const getAllOrder = () => {
+  return axios.get(`${apiUrl}/api/${apiPath}/orders`);
+};
+
+// 取得單一訂單
+export const getOrder = (order_id) => {
+  return axios.get(`${apiUrl}/api/${apiPath}/order/${order_id}`);
+};
+
+// 付款
+export const submitPay = (order_id) => {
+  return axios.post(`${apiUrl}/api/${apiPath}/pay/${order_id}`);
 };

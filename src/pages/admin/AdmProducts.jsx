@@ -3,17 +3,17 @@ import useMessage from '../../hooks/useMessage';
 // API
 import {
   getAdminProducts,
-  deleteProduct,
-  uploadImage,
-  addProduct,
-  editProduct,
+  deleteAdminProduct,
+  uploadAdminImage,
+  addAdminProduct,
+  editAdminProduct,
 } from '../../api/ApiAdmin';
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Pagination from '../../components/Pagination';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Pagination from '../../components/common/Pagination';
+import ConfirmModal from '../../components/common/ConfirmModal';
 import DetailModal from '../../components/admin/DetailModal';
 import ProductModal from '../../components/admin/ProductModal';
-import ConfirmModal from '../../components/ConfirmModal';
 // redux
 import { useDispatch } from 'react-redux';
 import { createAsyncMessage } from '../../store/slices/messageSlice';
@@ -83,7 +83,7 @@ function AdmProducts() {
 
   const handleDelete = async () => {
     try {
-      const res = await deleteProduct(confirmId);
+      const res = await deleteAdminProduct(confirmId);
       showSuccess('刪除成功', res.data);
       setConfirmId(null);
       getData();
@@ -106,7 +106,7 @@ function AdmProducts() {
     try {
       const formData = new FormData();
       formData.append('file-to-upload', file);
-      const res = await uploadImage(formData);
+      const res = await uploadAdminImage(formData);
       showSuccess('上傳成功');
       setTempProduct((pre) => ({
         ...pre,
@@ -185,9 +185,9 @@ function AdmProducts() {
     setIsLoading(true);
     try {
       if (modalMode === 'create') {
-        await addProduct(tempProduct);
+        await addAdminProduct(tempProduct);
       } else {
-        await editProduct(tempProduct.id, tempProduct);
+        await editAdminProduct(tempProduct.id, tempProduct);
       }
       showSuccess(`${modalMode === 'create' ? '新增' : '更新'}成功`);
       setIsProductModalOpen(false);

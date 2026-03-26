@@ -5,7 +5,7 @@ import useMessage from '../../hooks/useMessage';
 // API
 import { getProductDetail, addCart } from '../../api/ApiClient';
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { renderRefresh } from '../../store/slices/cartSlice';
 
 function ProductDetail() {
@@ -38,7 +38,7 @@ function ProductDetail() {
     if (id) {
       getProductIdDetail(id);
     }
-  }, [id, showError]);
+  }, []);
 
   // 預設主圖為大圖
   useEffect(() => {
@@ -198,7 +198,13 @@ function ProductDetail() {
                         <h5>
                           <i className='bi bi-star me-2'></i>照顧難度
                         </h5>
-                        <p>{product.difficulty?.stars}</p>
+                        {Array.from({ length: product.difficulty?.stars }).map(
+                          (item, index) => (
+                            <span key={index}>
+                              <i className='bi bi-droplet-fill text-accent'></i>
+                            </span>
+                          ),
+                        )}
                       </div>
                       <div className='col-6'>
                         <h5>

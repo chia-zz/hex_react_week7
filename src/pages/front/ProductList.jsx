@@ -7,9 +7,9 @@ import { renderRefresh } from '../../store/slices/cartSlice';
 // API
 import { getProducts, getAllProducts, addCart } from '../../api/ApiClient';
 // 元件
-import LoadingSpinner from '../../components/LoadingSpinner';
-import Pagination from '../../components/Pagination';
-import CategoryNav from '../../components/CategoryNav';
+import LoadingSpinner from '../../components/common/LoadingSpinner';
+import Pagination from '../../components/common/Pagination';
+import CategoryNav from '../../components/front/CategoryNav';
 
 function ProductList() {
   const navigate = useNavigate();

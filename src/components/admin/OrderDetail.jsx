@@ -8,6 +8,13 @@ function OrderDetail({ tempOrder, isOpen, onClose }) {
     }
   };
 
+  // 處理支付方式格式
+  const paymentMap = {
+    cash: '現金',
+    credit_card: '信用卡',
+    e_payment: '電子支付',
+  };
+
   // 折扣金額轉換
   const getDiscount = (products) => {
     const productList = Object.values(products);
@@ -65,6 +72,10 @@ function OrderDetail({ tempOrder, isOpen, onClose }) {
                           訂購人資訊
                         </h6>
                         <div className='text-start text-sec-900 px-5 mb-3'>
+                          <label>訂單編號</label>
+                          <p className='fw-medium'>{tempOrder.id}</p>
+                        </div>
+                        <div className='text-start text-sec-900 px-5 mb-3'>
                           <label>顧客姓名</label>
                           <p className='fw-medium'>{tempOrder.user.name}</p>
                         </div>
@@ -92,14 +103,30 @@ function OrderDetail({ tempOrder, isOpen, onClose }) {
                           <label>下單日期</label>
                           <p>{formatDate(tempOrder.create_at)}</p>
                         </div>
-                        <div className='text-start text-sec-900 d-flex justify-content-between align-items-center px-5'>
+                        <div className='text-start text-sec-900 d-flex justify-content-between align-items-center px-5 mb-3'>
                           <label>付款狀態</label>
                           {tempOrder.is_paid ? (
-                            <span className='badge bg-success'>已付款</span>
+                            <>
+                              <span className='badge bg-success'>已付款</span>
+                            </>
                           ) : (
                             <span className='badge bg-danger'>待付款</span>
                           )}
                         </div>
+
+                        {tempOrder.is_paid ? (
+                          <>
+                            <div className='text-start text-sec-900 d-flex justify-content-between align-items-center px-5'>
+                              <label>付款方式</label>
+                              <span className=' text-success'>
+                                {paymentMap[tempOrder.user.payment_method] ||
+                                  '支付方式有誤，請重新整理'}
+                              </span>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       <hr className='d-block d-lg-none' />
                     </div>

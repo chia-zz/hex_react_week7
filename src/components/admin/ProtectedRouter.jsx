@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { checkUserLogin } from '../../api/ApiAdmin';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../common/LoadingSpinner';
 import useMessage from '../../hooks/useMessage';
 
 function ProtectedRouter({ children }) {
