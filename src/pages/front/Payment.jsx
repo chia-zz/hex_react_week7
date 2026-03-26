@@ -23,10 +23,7 @@ function Payment() {
       try {
         const res = await getOrder(orderId);
         setOrderData(res.data.order);
-
-        console.log(res.data.order);
         setProducts(Object.values(res.data.order.products));
-        console.log(res.data.order.products);
       } catch (error) {
         showError(`取得失敗:${error.res.data.message}`);
       } finally {

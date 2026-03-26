@@ -75,8 +75,7 @@ function Cart() {
       getAllCart();
       dispatch(renderRefresh());
     } catch (error) {
-      console.error('更新失敗', error);
-      showError('更新失敗');
+      showError('更新失敗', error);
     } finally {
       setLoadingItemId(null);
     }
@@ -112,7 +111,7 @@ function Cart() {
       getAllCart();
       dispatch(renderRefresh());
     } catch (error) {
-      console.error('清空失敗', error);
+      showError('清空失敗', error);
     }
   };
 
