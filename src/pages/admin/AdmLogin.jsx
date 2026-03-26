@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminSignin } from '../../api/ApiAdmin';
 import { useForm } from 'react-hook-form';
@@ -6,7 +6,7 @@ import useMessage from '../../hooks/useMessage';
 
 function LoginPage() {
   const navigate = useNavigate(); // 建立 navigate router
-  const [isAuth, setIsAuth] = useState(false);
+  // const [isAuth, setIsAuth] = useState(false);
   // redux
   const { showError, showSuccess } = useMessage();
 
@@ -29,13 +29,14 @@ function LoginPage() {
       const res = await adminSignin(formData);
       const { token, expired } = res.data;
       // cookie & token setting
+      // eslint-disable-next-line
       document.cookie = `hexToken=${token};expires=${new Date(expired)};`;
       // axios.defaults.headers.common["Authorization"] = token;
       showSuccess('登入成功');
       navigate('/admin/products');
     } catch (error) {
       showError(`登入失敗: ${error.response?.data.message}`);
-      setIsAuth(false);
+      // setIsAuth(false);
     }
   };
 

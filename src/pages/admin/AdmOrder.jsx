@@ -53,6 +53,7 @@ function AdmOrder() {
     };
 
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 處理訂單欄位

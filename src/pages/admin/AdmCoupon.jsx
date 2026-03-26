@@ -81,6 +81,7 @@ function AdmCoupon() {
     };
 
     init();
+    // eslint-disable-next-line
   }, []);
 
   // delete coupon

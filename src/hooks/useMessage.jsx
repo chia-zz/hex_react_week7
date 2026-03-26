@@ -2,10 +2,10 @@ import { useDispatch } from 'react-redux';
 import { createAsyncMessage } from '../store/slices/messageSlice';
 
 function useMessage() {
-  const dispatcch = useDispatch();
+  const dispatch = useDispatch();
 
   const showSuccess = (message) => {
-    dispatcch(
+    dispatch(
       createAsyncMessage({
         success: true,
         message,
@@ -14,7 +14,7 @@ function useMessage() {
   };
 
   const showError = (message) => {
-    dispatcch(
+    dispatch(
       createAsyncMessage({
         success: false,
         message,
